@@ -51,5 +51,3 @@ This is a Full Stack Web App made in .NET to help users build and persist their 
 - User authentication and password encryption
 - Login using google, facebook account
 - Possibly implement Dockersize for packaging application
-
-* Testing
