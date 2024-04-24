@@ -23,3 +23,7 @@ dotnet run
 
 Implementing a new feature:
 git checkout -b nameOfMybranch
+--do coding work
+git add {dir,files, or all}
+git commit -m "commit message"
+git push --set-upstream origin nameOfMybranch
