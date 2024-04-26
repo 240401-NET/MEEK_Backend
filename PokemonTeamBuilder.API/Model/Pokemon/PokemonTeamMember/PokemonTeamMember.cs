@@ -23,6 +23,8 @@ public partial class PokemonTeamMember
 
     public int HeldItemId { get; set; }
 
+    public int PokemonTeamId { get; set; }
+
     public virtual PokemonAbility ChosenAbility { get; set; } = null!;
 
     public virtual ItemPokeApi HeldItem { get; set; } = null!;
@@ -32,4 +34,6 @@ public partial class PokemonTeamMember
     public virtual PokemonMoveSet? PokemonMoveSet { get; set; }
 
     public virtual ICollection<PokemonStat> PokemonStats { get; set; } = new List<PokemonStat>();
+
+    public virtual PokemonTeam PokemonTeam { get; set; } = null!;
 }

@@ -11,5 +11,7 @@ public partial class PokemonTeam
 
     public int TrainerId { get; set; }
 
+    public virtual ICollection<PokemonTeamMember> PokemonTeamMembers { get; set; } = new List<PokemonTeamMember>();
+
     public virtual Trainer Trainer { get; set; } = null!;
 }

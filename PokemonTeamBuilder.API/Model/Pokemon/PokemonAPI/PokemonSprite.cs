@@ -13,7 +13,7 @@ public partial class PokemonSprite
 
     public string FrontShinyFemale { get; set; } = null!;
 
-    public int PokemonId { get; set; }
+    public int PkmApiId { get; set; }
 
-    public virtual PokemonPokeApi Pokemon { get; set; } = null!;
+    public virtual PokemonPokeApi PkmApi { get; set; } = null!;
 }
