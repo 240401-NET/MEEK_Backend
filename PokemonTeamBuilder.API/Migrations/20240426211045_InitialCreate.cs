@@ -132,7 +132,7 @@ namespace PokemonTeamBuilder.API.Migrations
                 schema: "PokemonTeamBuilder",
                 columns: table => new
                 {
-                    PokemonID = table.Column<int>(type: "int", nullable: false),
+                    PKM_API_ID = table.Column<int>(type: "int", nullable: false),
                     FrontDefault = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     FrontShiny = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     FrontFemale = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -140,10 +140,10 @@ namespace PokemonTeamBuilder.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PokemonSprite", x => x.PokemonID);
+                    table.PrimaryKey("PK_PokemonSprite", x => x.PKM_API_ID);
                     table.ForeignKey(
                         name: "FK_PokemonID_Sprite",
-                        column: x => x.PokemonID,
+                        column: x => x.PKM_API_ID,
                         principalSchema: "PokemonTeamBuilder",
                         principalTable: "Pokemon_PokeAPI",
                         principalColumn: "ID");
@@ -169,44 +169,6 @@ namespace PokemonTeamBuilder.API.Migrations
                         principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_PKMAPI_Ability_Junc_Pokemon_PokeAP",
-                        column: x => x.PKM_API_ID,
-                        principalSchema: "PokemonTeamBuilder",
-                        principalTable: "Pokemon_PokeAPI",
-                        principalColumn: "ID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Pokemon_TeamMember",
-                schema: "PokemonTeamBuilder",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false),
-                    PKM_API_ID = table.Column<int>(type: "int", nullable: false),
-                    NickName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Level = table.Column<int>(type: "int", nullable: false),
-                    ChosenAbilityID = table.Column<int>(type: "int", nullable: false),
-                    Gender = table.Column<bool>(type: "bit", nullable: false),
-                    IsShiny = table.Column<bool>(type: "bit", nullable: false),
-                    TeraType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    HeldItemID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pokemon_TeamMember", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Pokemon_TeamMember_Item_PokeAPI_2",
-                        column: x => x.HeldItemID,
-                        principalSchema: "PokemonTeamBuilder",
-                        principalTable: "Item_PokeAPI",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Pokemon_TeamMember_PokemonAbility_1",
-                        column: x => x.ChosenAbilityID,
-                        principalSchema: "PokemonTeamBuilder",
-                        principalTable: "PokemonAbility",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Pokemon_TeamMember_Pokemon_PokeAPI",
                         column: x => x.PKM_API_ID,
                         principalSchema: "PokemonTeamBuilder",
                         principalTable: "Pokemon_PokeAPI",
@@ -283,6 +245,51 @@ namespace PokemonTeamBuilder.API.Migrations
                         column: x => x.TrainerID,
                         principalSchema: "PokemonTeamBuilder",
                         principalTable: "Trainer",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pokemon_TeamMember",
+                schema: "PokemonTeamBuilder",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false),
+                    PKM_API_ID = table.Column<int>(type: "int", nullable: false),
+                    NickName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    ChosenAbilityID = table.Column<int>(type: "int", nullable: false),
+                    Gender = table.Column<bool>(type: "bit", nullable: false),
+                    IsShiny = table.Column<bool>(type: "bit", nullable: false),
+                    TeraType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    HeldItemID = table.Column<int>(type: "int", nullable: false),
+                    PokemonTeamID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pokemon_TeamMember", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Pokemon_TeamMember_Item_PokeAPI",
+                        column: x => x.HeldItemID,
+                        principalSchema: "PokemonTeamBuilder",
+                        principalTable: "Item_PokeAPI",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Pokemon_TeamMember_PokemonAbility",
+                        column: x => x.ChosenAbilityID,
+                        principalSchema: "PokemonTeamBuilder",
+                        principalTable: "PokemonAbility",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Pokemon_TeamMember_PokemonTeam",
+                        column: x => x.PokemonTeamID,
+                        principalSchema: "PokemonTeamBuilder",
+                        principalTable: "PokemonTeam",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Pokemon_TeamMember_Pokemon_PokeAPI",
+                        column: x => x.PKM_API_ID,
+                        principalSchema: "PokemonTeamBuilder",
+                        principalTable: "Pokemon_PokeAPI",
                         principalColumn: "ID");
                 });
 
@@ -370,6 +377,12 @@ namespace PokemonTeamBuilder.API.Migrations
                 column: "PKM_API_ID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pokemon_TeamMember_PokemonTeamID",
+                schema: "PokemonTeamBuilder",
+                table: "Pokemon_TeamMember",
+                column: "PokemonTeamID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PokemonBaseStat_PKM_API_ID",
                 schema: "PokemonTeamBuilder",
                 table: "PokemonBaseStat",
@@ -420,10 +433,6 @@ namespace PokemonTeamBuilder.API.Migrations
                 schema: "PokemonTeamBuilder");
 
             migrationBuilder.DropTable(
-                name: "PokemonTeam",
-                schema: "PokemonTeamBuilder");
-
-            migrationBuilder.DropTable(
                 name: "PokemonMove",
                 schema: "PokemonTeamBuilder");
 
@@ -436,10 +445,6 @@ namespace PokemonTeamBuilder.API.Migrations
                 schema: "PokemonTeamBuilder");
 
             migrationBuilder.DropTable(
-                name: "Trainer",
-                schema: "PokemonTeamBuilder");
-
-            migrationBuilder.DropTable(
                 name: "Item_PokeAPI",
                 schema: "PokemonTeamBuilder");
 
@@ -448,7 +453,15 @@ namespace PokemonTeamBuilder.API.Migrations
                 schema: "PokemonTeamBuilder");
 
             migrationBuilder.DropTable(
+                name: "PokemonTeam",
+                schema: "PokemonTeamBuilder");
+
+            migrationBuilder.DropTable(
                 name: "Pokemon_PokeAPI",
+                schema: "PokemonTeamBuilder");
+
+            migrationBuilder.DropTable(
+                name: "Trainer",
                 schema: "PokemonTeamBuilder");
         }
     }

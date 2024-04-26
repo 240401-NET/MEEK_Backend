@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PokemonTeamBuilder.API;
+using PokemonTeamBuilder.API.DB;
 
 #nullable disable
 
 namespace PokemonTeamBuilder.API.Migrations.UserDB
 {
     [DbContext(typeof(UserDBContext))]
-    [Migration("20240426184926_InitialCreate")]
+    [Migration("20240426211108_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

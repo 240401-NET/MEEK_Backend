@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PokemonTeamBuilder.API;
+using PokemonTeamBuilder.API.DB;
 
 #nullable disable
 
@@ -81,7 +81,7 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.ToTable("PKMAPI_Type_Junc", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.ItemPokeApi", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.ItemPokeApi", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int")
@@ -104,7 +104,7 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.ToTable("Item_PokeAPI", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonAbility", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonAbility", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -136,7 +136,7 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.ToTable("PokemonAbility", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonBaseStat", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonBaseStat", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int")
@@ -166,7 +166,7 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.ToTable("PokemonBaseStat", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonMove", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonMove", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -192,7 +192,7 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.ToTable("PokemonMove", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonMoveSet", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonMoveSet", b =>
                 {
                     b.Property<int>("PkmTmId")
                         .HasColumnType("int")
@@ -227,7 +227,7 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.ToTable("PokemonMoveSet", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonPokeApi", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonPokeApi", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -249,11 +249,11 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.ToTable("Pokemon_PokeAPI", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonSprite", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonSprite", b =>
                 {
-                    b.Property<int>("PokemonId")
+                    b.Property<int>("PkmApiId")
                         .HasColumnType("int")
-                        .HasColumnName("PokemonID");
+                        .HasColumnName("PKM_API_ID");
 
                     b.Property<string>("FrontDefault")
                         .IsRequired()
@@ -275,12 +275,12 @@ namespace PokemonTeamBuilder.API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("PokemonId");
+                    b.HasKey("PkmApiId");
 
                     b.ToTable("PokemonSprite", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonStat", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonStat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -320,7 +320,7 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.ToTable("PokemonStat", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonTeam", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonTeam", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -347,7 +347,7 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.ToTable("PokemonTeam", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonTeamMember", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonTeamMember", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int")
@@ -379,6 +379,10 @@ namespace PokemonTeamBuilder.API.Migrations
                         .HasColumnType("int")
                         .HasColumnName("PKM_API_ID");
 
+                    b.Property<int>("PokemonTeamId")
+                        .HasColumnType("int")
+                        .HasColumnName("PokemonTeamID");
+
                     b.Property<string>("TeraType")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -392,10 +396,12 @@ namespace PokemonTeamBuilder.API.Migrations
 
                     b.HasIndex("PkmApiId");
 
+                    b.HasIndex("PokemonTeamId");
+
                     b.ToTable("Pokemon_TeamMember", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonType", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -423,7 +429,7 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.ToTable("PokemonType", "PokemonTeamBuilder");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.Trainer", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.Trainer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -446,13 +452,13 @@ namespace PokemonTeamBuilder.API.Migrations
 
             modelBuilder.Entity("PkmapiAbilityJunc", b =>
                 {
-                    b.HasOne("PokemonTeamBuilder.API.PokemonAbility", null)
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonAbility", null)
                         .WithMany()
                         .HasForeignKey("AbilityId")
                         .IsRequired()
                         .HasConstraintName("FK_PKMAPI_Ability_Junc_PokemonAbility");
 
-                    b.HasOne("PokemonTeamBuilder.API.PokemonPokeApi", null)
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonPokeApi", null)
                         .WithMany()
                         .HasForeignKey("PkmApiId")
                         .IsRequired()
@@ -461,13 +467,13 @@ namespace PokemonTeamBuilder.API.Migrations
 
             modelBuilder.Entity("PkmapiMoveJunc", b =>
                 {
-                    b.HasOne("PokemonTeamBuilder.API.PokemonMove", null)
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonMove", null)
                         .WithMany()
                         .HasForeignKey("MoveId")
                         .IsRequired()
                         .HasConstraintName("FK_PKMAPI_Move_Junc_PokemonMove");
 
-                    b.HasOne("PokemonTeamBuilder.API.PokemonPokeApi", null)
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonPokeApi", null)
                         .WithMany()
                         .HasForeignKey("PkmApiId")
                         .IsRequired()
@@ -476,22 +482,22 @@ namespace PokemonTeamBuilder.API.Migrations
 
             modelBuilder.Entity("PkmapiTypeJunc", b =>
                 {
-                    b.HasOne("PokemonTeamBuilder.API.PokemonPokeApi", null)
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonPokeApi", null)
                         .WithMany()
                         .HasForeignKey("PkmApiId")
                         .IsRequired()
                         .HasConstraintName("FK_PKMAPI_Type_Junc_Pokemon_PokeAPI");
 
-                    b.HasOne("PokemonTeamBuilder.API.PokemonType", null)
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonType", null)
                         .WithMany()
                         .HasForeignKey("TypeId")
                         .IsRequired()
                         .HasConstraintName("FK_PKMAPI_Type_Junc_PokemonType");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonBaseStat", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonBaseStat", b =>
                 {
-                    b.HasOne("PokemonTeamBuilder.API.PokemonPokeApi", "PkmApi")
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonPokeApi", "PkmApi")
                         .WithMany("PokemonBaseStats")
                         .HasForeignKey("PkmApiId")
                         .IsRequired()
@@ -500,31 +506,31 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Navigation("PkmApi");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonMoveSet", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonMoveSet", b =>
                 {
-                    b.HasOne("PokemonTeamBuilder.API.PokemonTeamMember", "PkmTm")
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonTeamMember", "PkmTm")
                         .WithOne("PokemonMoveSet")
-                        .HasForeignKey("PokemonTeamBuilder.API.PokemonMoveSet", "PkmTmId")
+                        .HasForeignKey("PokemonTeamBuilder.API.Model.PokemonMoveSet", "PkmTmId")
                         .IsRequired()
                         .HasConstraintName("FK_PokemonMoveSet_Pokemon_TeamMember");
 
                     b.Navigation("PkmTm");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonSprite", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonSprite", b =>
                 {
-                    b.HasOne("PokemonTeamBuilder.API.PokemonPokeApi", "Pokemon")
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonPokeApi", "PkmApi")
                         .WithOne("PokemonSprite")
-                        .HasForeignKey("PokemonTeamBuilder.API.PokemonSprite", "PokemonId")
+                        .HasForeignKey("PokemonTeamBuilder.API.Model.PokemonSprite", "PkmApiId")
                         .IsRequired()
                         .HasConstraintName("FK_PokemonID_Sprite");
 
-                    b.Navigation("Pokemon");
+                    b.Navigation("PkmApi");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonStat", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonStat", b =>
                 {
-                    b.HasOne("PokemonTeamBuilder.API.PokemonTeamMember", "PkmTm")
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonTeamMember", "PkmTm")
                         .WithMany("PokemonStats")
                         .HasForeignKey("PkmTmId")
                         .IsRequired()
@@ -533,9 +539,9 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Navigation("PkmTm");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonTeam", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonTeam", b =>
                 {
-                    b.HasOne("PokemonTeamBuilder.API.Trainer", "Trainer")
+                    b.HasOne("PokemonTeamBuilder.API.Model.Trainer", "Trainer")
                         .WithMany("PokemonTeams")
                         .HasForeignKey("TrainerId")
                         .IsRequired()
@@ -544,44 +550,52 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Navigation("Trainer");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonTeamMember", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonTeamMember", b =>
                 {
-                    b.HasOne("PokemonTeamBuilder.API.PokemonAbility", "ChosenAbility")
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonAbility", "ChosenAbility")
                         .WithMany("PokemonTeamMembers")
                         .HasForeignKey("ChosenAbilityId")
                         .IsRequired()
-                        .HasConstraintName("FK_Pokemon_TeamMember_PokemonAbility_1");
+                        .HasConstraintName("FK_Pokemon_TeamMember_PokemonAbility");
 
-                    b.HasOne("PokemonTeamBuilder.API.ItemPokeApi", "HeldItem")
+                    b.HasOne("PokemonTeamBuilder.API.Model.ItemPokeApi", "HeldItem")
                         .WithMany("PokemonTeamMembers")
                         .HasForeignKey("HeldItemId")
                         .IsRequired()
-                        .HasConstraintName("FK_Pokemon_TeamMember_Item_PokeAPI_2");
+                        .HasConstraintName("FK_Pokemon_TeamMember_Item_PokeAPI");
 
-                    b.HasOne("PokemonTeamBuilder.API.PokemonPokeApi", "PkmApi")
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonPokeApi", "PkmApi")
                         .WithMany("PokemonTeamMembers")
                         .HasForeignKey("PkmApiId")
                         .IsRequired()
                         .HasConstraintName("FK_Pokemon_TeamMember_Pokemon_PokeAPI");
+
+                    b.HasOne("PokemonTeamBuilder.API.Model.PokemonTeam", "PokemonTeam")
+                        .WithMany("PokemonTeamMembers")
+                        .HasForeignKey("PokemonTeamId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Pokemon_TeamMember_PokemonTeam");
 
                     b.Navigation("ChosenAbility");
 
                     b.Navigation("HeldItem");
 
                     b.Navigation("PkmApi");
+
+                    b.Navigation("PokemonTeam");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.ItemPokeApi", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.ItemPokeApi", b =>
                 {
                     b.Navigation("PokemonTeamMembers");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonAbility", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonAbility", b =>
                 {
                     b.Navigation("PokemonTeamMembers");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonPokeApi", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonPokeApi", b =>
                 {
                     b.Navigation("PokemonBaseStats");
 
@@ -590,14 +604,19 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Navigation("PokemonTeamMembers");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.PokemonTeamMember", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonTeam", b =>
+                {
+                    b.Navigation("PokemonTeamMembers");
+                });
+
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonTeamMember", b =>
                 {
                     b.Navigation("PokemonMoveSet");
 
                     b.Navigation("PokemonStats");
                 });
 
-            modelBuilder.Entity("PokemonTeamBuilder.API.Trainer", b =>
+            modelBuilder.Entity("PokemonTeamBuilder.API.Model.Trainer", b =>
                 {
                     b.Navigation("PokemonTeams");
                 });
