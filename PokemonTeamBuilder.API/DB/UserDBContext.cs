@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace PokemonTeamBuilder.API;
+namespace PokemonTeamBuilder.API.DB;
 
 public class UserDBContext : IdentityDbContext
 {
