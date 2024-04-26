@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PokemonTeamBuilder.API;
+using PokemonTeamBuilder.API.DB;
 
 var builder = WebApplication.CreateBuilder(args);
 
