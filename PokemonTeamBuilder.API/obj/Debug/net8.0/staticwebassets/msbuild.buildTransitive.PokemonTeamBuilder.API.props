@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\PokemonTeamBuilder.API.props" />
-</Project>
