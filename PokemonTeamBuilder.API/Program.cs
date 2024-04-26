@@ -1,14 +1,24 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PokemonTeamBuilder.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-// builder.Services.AddDbContext<DBContext>(options =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
+builder.Services.AddDbContext<UserDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UserID_Local")));
+
+builder.Services.AddDbContext<PokemonTrainerDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PSTBAPI_Local")));
+
 
 // builder.Services.AddScoped<RepoInterface, RepoClass>();
+
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+.AddEntityFrameworkStores<UserDBContext>();
 
 builder.Services.AddHttpClient();
 
@@ -31,6 +41,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();
