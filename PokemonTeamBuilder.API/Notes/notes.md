@@ -44,3 +44,5 @@ Make sure the connection string {Initial Catalog} field is different for {UserDB
 #### Run the below commands to make migrations
 - dotnet ef database update --context PokemonTrainerDbContext
 - dotnet ef database update --context UserDBContext 
+
+--testing/setting upstream in branch
