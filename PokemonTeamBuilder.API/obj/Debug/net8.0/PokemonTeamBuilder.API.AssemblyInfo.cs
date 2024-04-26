@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PokemonTeamBuilder.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2029bcfc70c00eb4f2ac69c8a16dd23c22edb9a5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f1be621155d962bfc373804608844928b13a5f42")]
 [assembly: System.Reflection.AssemblyProductAttribute("PokemonTeamBuilder.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PokemonTeamBuilder.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
