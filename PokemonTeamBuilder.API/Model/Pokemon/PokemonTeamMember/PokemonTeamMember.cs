@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PokemonTeamBuilder.API;
+namespace PokemonTeamBuilder.API.Model;
 
 public partial class PokemonTeamMember
 {

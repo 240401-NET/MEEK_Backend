@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using PokemonTeamBuilder.API.Model;
 
-namespace PokemonTeamBuilder.API;
+namespace PokemonTeamBuilder.API.DB;
 
 public partial class PokemonTrainerDbContext : DbContext
 {
