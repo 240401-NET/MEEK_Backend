@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using PokemonTeamBuilder.API.Model;
 
-namespace PokemonTeamBuilder.API;
+namespace PokemonTeamBuilder.API.DB;
 
 public partial class PokemonTrainerDbContext : DbContext
 {
@@ -206,20 +207,20 @@ public partial class PokemonTrainerDbContext : DbContext
 
         modelBuilder.Entity<PokemonSprite>(entity =>
         {
-            entity.HasKey(e => e.PokemonId);
+            entity.HasKey(e => e.PkmApiId);
 
             entity.ToTable("PokemonSprite", "PokemonTeamBuilder");
 
-            entity.Property(e => e.PokemonId)
+            entity.Property(e => e.PkmApiId)
                 .ValueGeneratedNever()
-                .HasColumnName("PokemonID");
+                .HasColumnName("PKM_API_ID");
             entity.Property(e => e.FrontDefault).HasMaxLength(255);
             entity.Property(e => e.FrontFemale).HasMaxLength(255);
             entity.Property(e => e.FrontShiny).HasMaxLength(255);
             entity.Property(e => e.FrontShinyFemale).HasMaxLength(255);
 
-            entity.HasOne(d => d.Pokemon).WithOne(p => p.PokemonSprite)
-                .HasForeignKey<PokemonSprite>(d => d.PokemonId)
+            entity.HasOne(d => d.PkmApi).WithOne(p => p.PokemonSprite)
+                .HasForeignKey<PokemonSprite>(d => d.PkmApiId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PokemonID_Sprite");
         });
@@ -270,22 +271,28 @@ public partial class PokemonTrainerDbContext : DbContext
             entity.Property(e => e.HeldItemId).HasColumnName("HeldItemID");
             entity.Property(e => e.NickName).HasMaxLength(50);
             entity.Property(e => e.PkmApiId).HasColumnName("PKM_API_ID");
+            entity.Property(e => e.PokemonTeamId).HasColumnName("PokemonTeamID");
             entity.Property(e => e.TeraType).HasMaxLength(50);
 
             entity.HasOne(d => d.ChosenAbility).WithMany(p => p.PokemonTeamMembers)
                 .HasForeignKey(d => d.ChosenAbilityId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Pokemon_TeamMember_PokemonAbility_1");
+                .HasConstraintName("FK_Pokemon_TeamMember_PokemonAbility");
 
             entity.HasOne(d => d.HeldItem).WithMany(p => p.PokemonTeamMembers)
                 .HasForeignKey(d => d.HeldItemId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Pokemon_TeamMember_Item_PokeAPI_2");
+                .HasConstraintName("FK_Pokemon_TeamMember_Item_PokeAPI");
 
             entity.HasOne(d => d.PkmApi).WithMany(p => p.PokemonTeamMembers)
                 .HasForeignKey(d => d.PkmApiId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Pokemon_TeamMember_Pokemon_PokeAPI");
+
+            entity.HasOne(d => d.PokemonTeam).WithMany(p => p.PokemonTeamMembers)
+                .HasForeignKey(d => d.PokemonTeamId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Pokemon_TeamMember_PokemonTeam");
         });
 
         modelBuilder.Entity<PokemonType>(entity =>
