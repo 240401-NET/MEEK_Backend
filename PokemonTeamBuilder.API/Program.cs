@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PokemonTeamBuilder.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Services.AddDbContext<DBContext>(options =>
 //     options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnectionString")));
 
+builder.Services.AddDbContext<UserDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UserID_Local")));
+
 // builder.Services.AddScoped<RepoInterface, RepoClass>();
+
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+.AddEntityFrameworkStores<UserDBContext>();
 
 builder.Services.AddHttpClient();
 
@@ -31,6 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();
