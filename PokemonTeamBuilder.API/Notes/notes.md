@@ -32,3 +32,15 @@
 
 ## To get back to main
 - git checkout main
+
+## To make migrations to DB
+Ensure you have user-secrets with proper connection strings setup with the names used on line 11 and 14 of Program.cs
+Make sure the connection string {Initial Catalog} field is different for {UserDBContext} and {PokemonTrainerDbContext} otherwise all tables will be made into the same database
+
+#### Examples of my local DB Connection strings
+- ConnectionStrings:UserID_Local = Server=localhost;Database=master;Initial Catalog=UserIdentityDB;Trusted_Connection=True;TrustServerCertificate=True;
+- ConnectionStrings:PSTBAPI_Local = Server=localhost;Database=master;Initial Catalog=PSTBAPI;Trusted_Connection=True;TrustServerCertificate=True;
+
+#### Run the below commands to make migrations
+- dotnet ef database update --context PokemonTrainerDbContext
+- dotnet ef database update --context UserDBContext 
