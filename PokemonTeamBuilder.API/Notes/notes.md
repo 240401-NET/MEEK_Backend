@@ -44,3 +44,12 @@ Make sure the connection string {Initial Catalog} field is different for {UserDB
 #### Run the below commands to make migrations
 - dotnet ef database update --context PokemonTrainerDbContext
 - dotnet ef database update --context UserDBContext 
+
+#### Add a new migration
+- dotnet ef migrations add {NameofMigration} --context {DBContext}
+
+#### Undo all database updates (migrations)
+- dotnet ef database update 0 --context {DBContext}
+
+#### Remove last migration made
+- dotnet ef migrations remove --context {DBContext}
