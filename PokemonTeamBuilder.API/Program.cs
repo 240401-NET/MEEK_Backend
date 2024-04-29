@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PokemonTeamBuilder.API.DB;
 using PokemonTeamBuilder.API.Model;
+using PokemonTeamBuilder.API.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ builder.Services.AddDbContext<UserDBContext>(options =>
 builder.Services.AddDbContext<PokemonTrainerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PSTBAPI_Local")));
 
-// builder.Services.AddScoped<RepoInterface, RepoClass>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
