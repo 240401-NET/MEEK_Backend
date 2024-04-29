@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PokemonTeamBuilder.API.DB;
+using PokemonTeamBuilder.API.Service;
+using PokemonTeamBuilder.API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,8 @@ builder.Services.AddDbContext<PokemonTrainerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PSTBAPI_Local")));
 
 
-// builder.Services.AddScoped<RepoInterface, RepoClass>();
+builder.Services.AddScoped<IPKMTeamService, PKMTeamServices>();
+builder.Services.AddScoped<IPKMTeamRepo, PKMTeamRepository>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
