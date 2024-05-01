@@ -17,3 +17,8 @@ public interface IPKMAPISevice
 {
     
 }
+
+public interface IPTMService
+{
+
+}

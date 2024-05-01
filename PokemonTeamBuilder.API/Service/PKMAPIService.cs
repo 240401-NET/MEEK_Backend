@@ -92,7 +92,7 @@ public class PKMAPISevice : IPKMAPISevice
 
             JsonArray testing = pokemonJSON["stats"]!.AsArray();
 
-            foreach(JsonNode stat in testing)
+            foreach(JsonNode? stat in testing)
             {
                 //Console.WriteLine(stat);
             }
