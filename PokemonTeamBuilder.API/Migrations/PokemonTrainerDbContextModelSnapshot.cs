@@ -143,12 +143,14 @@ namespace PokemonTeamBuilder.API.Migrations
                         .HasColumnName("ID");
 
                     b.Property<int>("BaseStat")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "base_stat");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasAnnotation("Relational:JsonPropertyName", "name");
 
                     b.Property<int>("PkmApiId")
                         .HasColumnType("int")
@@ -157,13 +159,16 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("URL");
+                        .HasColumnName("URL")
+                        .HasAnnotation("Relational:JsonPropertyName", "url");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PkmApiId");
 
                     b.ToTable("PokemonBaseStat", "PokemonTeamBuilder");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "stats");
                 });
 
             modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonMove", b =>
@@ -232,14 +237,16 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID");
+                        .HasColumnName("ID")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(30)")
+                        .HasAnnotation("Relational:JsonPropertyName", "name");
 
                     b.HasKey("Id")
                         .HasName("PK__Pokemon___3214EC26604EAF0F");
@@ -258,26 +265,32 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Property<string>("FrontDefault")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasAnnotation("Relational:JsonPropertyName", "front_default");
 
                     b.Property<string>("FrontFemale")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasAnnotation("Relational:JsonPropertyName", "front_female");
 
                     b.Property<string>("FrontShiny")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasAnnotation("Relational:JsonPropertyName", "front_shiny");
 
                     b.Property<string>("FrontShinyFemale")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasAnnotation("Relational:JsonPropertyName", "front_shiny_female");
 
                     b.HasKey("PkmApiId");
 
                     b.ToTable("PokemonSprite", "PokemonTeamBuilder");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "sprites");
                 });
 
             modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonStat", b =>
@@ -370,6 +383,10 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
+                    b.Property<string>("Nature")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("NickName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -382,6 +399,9 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Property<int>("PokemonTeamId")
                         .HasColumnType("int")
                         .HasColumnName("PokemonTeamID");
+
+                    b.Property<int>("RosterOrder")
+                        .HasColumnType("int");
 
                     b.Property<string>("TeraType")
                         .IsRequired()

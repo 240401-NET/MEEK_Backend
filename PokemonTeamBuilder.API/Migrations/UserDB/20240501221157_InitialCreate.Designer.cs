@@ -12,7 +12,7 @@ using PokemonTeamBuilder.API.DB;
 namespace PokemonTeamBuilder.API.Migrations.UserDB
 {
     [DbContext(typeof(UserDBContext))]
-    [Migration("20240429133836_InitialCreate")]
+    [Migration("20240501221157_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

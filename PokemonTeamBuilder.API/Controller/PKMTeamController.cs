@@ -2,8 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using PokemonTeamBuilder.API.Service;
 using PokemonTeamBuilder.API.Model;
 using PokemonTeamBuilder.API.Exceptoins;
+using Microsoft.AspNetCore.Authorization;
+using System.Net;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace PokemonTeamBuilder.API.Controller;
+
 [Route("api/[controller]")]
 [ApiController]
 public class PKMTeamController : ControllerBase{
@@ -17,7 +21,7 @@ public class PKMTeamController : ControllerBase{
     public ActionResult<IEnumerable<PokemonTeam>> GetAllTeams(int trainerID){
         try{
             return Ok(_pkmTeamService.GetAll(trainerID));
-        }catch(EmptyListException _e){
+        }catch(EmptyListException){
             return NoContent();
         }
     }
