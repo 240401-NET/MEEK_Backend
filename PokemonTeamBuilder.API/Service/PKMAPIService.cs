@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Microsoft.VisualBasic;
 using PokemonTeamBuilder.API.Model;
 
 namespace PokemonTeamBuilder.API.Service;
@@ -31,14 +32,16 @@ public class PKMAPISevice : IPKMAPISevice
         {
             var responseBody = await httpResponse.Result.Content.ReadAsStringAsync();
 
+            JsonNode pokemonResults = JsonNode.Parse(responseBody)!["results"]!;
+
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
 
-            PokemonAPIResponse pkmAPIRes = JsonSerializer.Deserialize<PokemonAPIResponse>(responseBody, options ?? null)!;
+            IEnumerable<PokemonNameandURL> pkmAPIRes = JsonSerializer.Deserialize<IEnumerable<PokemonNameandURL>>(pokemonResults, options ?? null)!;
 
-            return pkmAPIRes.Pokemons;          
+            return pkmAPIRes;          
         }
 
         return [];
@@ -87,9 +90,16 @@ public class PKMAPISevice : IPKMAPISevice
 
             JsonNode pokemonJSON = JsonNode.Parse(responseBody)!;
 
-            JsonNode testing = pokemonJSON["stats"]!;
+            JsonArray testing = pokemonJSON["stats"]!.AsArray();
 
-            Console.WriteLine(testing);
+            foreach(JsonNode stat in testing)
+            {
+                //Console.WriteLine(stat);
+            }
+
+
+
+            //Console.WriteLine(testing);
 
             //PokemonPokeApi pkmAPIRes = JsonSerializer.Deserialize<PokemonPokeApi>(responseBody, options ?? null)!;
    
