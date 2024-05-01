@@ -54,9 +54,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-PKMAPISevice t = new(new HttpClient());
-Console.WriteLine(string.Join("\n", t.GetAllPokemon().Result.Select(p => p.Name)));
-
 //app.MapIdentityApi<IdentityUser>();
 app.UseAuthentication();
 app.UseAuthorization();

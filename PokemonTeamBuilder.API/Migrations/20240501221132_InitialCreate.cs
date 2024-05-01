@@ -262,7 +262,9 @@ namespace PokemonTeamBuilder.API.Migrations
                     IsShiny = table.Column<bool>(type: "bit", nullable: false),
                     TeraType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     HeldItemID = table.Column<int>(type: "int", nullable: false),
-                    PokemonTeamID = table.Column<int>(type: "int", nullable: false)
+                    PokemonTeamID = table.Column<int>(type: "int", nullable: false),
+                    RosterOrder = table.Column<int>(type: "int", nullable: false),
+                    Nature = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
