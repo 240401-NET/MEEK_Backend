@@ -265,6 +265,7 @@ public partial class PokemonTrainerDbContext : DbContext
                 .HasColumnName("ID");
             entity.Property(e => e.ChosenAbilityId).HasColumnName("ChosenAbilityID");
             entity.Property(e => e.HeldItemId).HasColumnName("HeldItemID");
+            entity.Property(e => e.Nature).HasMaxLength(50);
             entity.Property(e => e.NickName).HasMaxLength(50);
             entity.Property(e => e.PkmApiId).HasColumnName("PKM_API_ID");
             entity.Property(e => e.PokemonTeamId).HasColumnName("PokemonTeamID");

@@ -25,6 +25,10 @@ public partial class PokemonTeamMember
 
     public int PokemonTeamId { get; set; }
 
+    public int RosterOrder { get; set; }
+
+    public string? Nature { get; set; }
+
     public virtual PokemonAbility ChosenAbility { get; set; } = null!;
 
     public virtual ItemPokeApi HeldItem { get; set; } = null!;
