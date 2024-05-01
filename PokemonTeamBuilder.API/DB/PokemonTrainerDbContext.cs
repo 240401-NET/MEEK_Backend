@@ -40,10 +40,6 @@ public partial class PokemonTrainerDbContext : DbContext
 
     public virtual DbSet<Trainer> Trainers { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=tcp:ew240401dotnet.database.windows.net,1433;Initial Catalog=PokemonTrainerDB;Persist Security Info=False;User ID=training-admin;Password=\"Hina10!)2323\";MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ItemPokeApi>(entity =>
@@ -269,7 +265,6 @@ public partial class PokemonTrainerDbContext : DbContext
                 .HasColumnName("ID");
             entity.Property(e => e.ChosenAbilityId).HasColumnName("ChosenAbilityID");
             entity.Property(e => e.HeldItemId).HasColumnName("HeldItemID");
-            entity.Property(e => e.Nature).HasMaxLength(50);
             entity.Property(e => e.NickName).HasMaxLength(50);
             entity.Property(e => e.PkmApiId).HasColumnName("PKM_API_ID");
             entity.Property(e => e.PokemonTeamId).HasColumnName("PokemonTeamID");
