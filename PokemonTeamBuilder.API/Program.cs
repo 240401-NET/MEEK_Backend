@@ -4,6 +4,7 @@ using PokemonTeamBuilder.API.DB;
 using PokemonTeamBuilder.API.Model;
 using PokemonTeamBuilder.API.Service;
 using PokemonTeamBuilder.API.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +19,9 @@ builder.Services.AddDbContext<PokemonTrainerDbContext>(options =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPKMTeamService, PKMTeamServices>();
+builder.Services.AddScoped<IPKMAPISevice, PKMAPISevice>();
 builder.Services.AddScoped<IPKMTeamRepo, PKMTeamRepository>();
 
-builder.Services.AddAuthorization();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
@@ -28,6 +29,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<UserDBContext>()
 .AddSignInManager<SignInManager<IdentityUser>>();
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 builder.Services.AddHttpClient();
 
@@ -50,7 +54,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+PKMAPISevice t = new(new HttpClient());
+t.TestMe();
+
 //app.MapIdentityApi<IdentityUser>();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();

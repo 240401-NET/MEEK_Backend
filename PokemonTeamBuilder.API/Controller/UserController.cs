@@ -44,9 +44,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("/logout")]
-    public async Task<IActionResult> Logout()
+    public IActionResult Logout()
     {
         _userService.Logout();
-        return Ok();
+        return NoContent();
     }
 }
