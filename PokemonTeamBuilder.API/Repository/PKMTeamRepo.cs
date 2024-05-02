@@ -10,8 +10,7 @@ public class PKMTeamRepository : IPKMTeamRepo
     public PKMTeamRepository(PokemonTrainerDbContext context) => _context = context;
 
     public async Task<IEnumerable<PokemonTeam?>> GetAll(int trainerID){     
-        IEnumerable<PokemonTeam?> returnTeams = _context.PokemonTeams.Include(c => c.PokemonTeamMembers).Where(p => p.TrainerId == trainerID);
-       return returnTeams;
+       return await _context.PokemonTeams.Include(c => c.PokemonTeamMembers).Where(p => p.TrainerId == trainerID).ToListAsync();
     } 
 
     public async Task<PokemonTeam> GetTeam(int id) {

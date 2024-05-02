@@ -54,8 +54,8 @@ public class PKMTeamController : ControllerBase{
     public ActionResult<IEnumerable<PokemonTeam>> GetTeam(int id){
         try{
             return Ok(_pkmTeamService.GetTeam(id));
-        }catch(EmptyListException){
-            return NoContent();
+        }catch(NullReferenceException e){
+            return Conflict(e.Message);
         }
     }
 
@@ -64,8 +64,8 @@ public class PKMTeamController : ControllerBase{
     public ActionResult<IEnumerable<PokemonTeam>> GetTeam(string name){
         try{
             return Ok(_pkmTeamService.GetTeam(name));
-        }catch(EmptyListException){
-            return NoContent();
+        }catch(NullReferenceException e){
+            return Conflict(e.Message);
         }
     }
 
@@ -74,8 +74,8 @@ public class PKMTeamController : ControllerBase{
     public ActionResult<IEnumerable<PokemonTeam>> UpdateTeam(PokemonTeam pkmTeam){
         try{
             return Ok(_pkmTeamService.UpdateTeam(pkmTeam));
-        }catch(EmptyListException){
-            return NoContent();
+        }catch(NullReferenceException e){
+            return Conflict(e.Message);
         }
     }
 }
