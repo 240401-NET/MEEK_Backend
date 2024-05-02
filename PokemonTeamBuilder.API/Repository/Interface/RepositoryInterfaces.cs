@@ -5,7 +5,7 @@ public interface IPKMTeamRepo{
     public Task<IEnumerable<PokemonTeam?>> GetAll(int trainerID);
     public Task<PokemonTeam> GetTeam(int id);
     public Task<PokemonTeam> GetTeam(string name);
-    public Task<PokemonTeam> CreateNewTeam(PokemonTeam pkmTeam, int trainerID);
+    public Task<PokemonTeam> CreateNewTeam(PokemonTeam pkmTeam);
     public Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam);
     public Task<PokemonTeam> DeleteTeam(int id);
     // Not Exposed

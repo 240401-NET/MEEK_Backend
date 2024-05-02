@@ -10,8 +10,8 @@ public class PKMTeamServices : IPKMTeamService
     private readonly IPKMTeamRepo _pkmTeamRepo;
     public PKMTeamServices(IPKMTeamRepo pkmTeamRepo) => _pkmTeamRepo = pkmTeamRepo;
 
-    public Task<PokemonTeam> CreateNewTeam(PokemonTeam pkmTeam, int trainerID) => 
-        DoesTeamExist(pkmTeam.Id).Result ? throw new ObjectExistException() : _pkmTeamRepo.CreateNewTeam(pkmTeam, trainerID);
+    public Task<PokemonTeam> CreateNewTeam(PokemonTeam pkmTeam) => 
+        DoesTeamExist(pkmTeam.Id).Result ? throw new ObjectExistException() : _pkmTeamRepo.CreateNewTeam(pkmTeam);
 
     public Task<PokemonTeam> DeleteTeam(int id) => 
         DoesTeamExist(id).Result ? _pkmTeamRepo.DeleteTeam(id) : throw new NullReferenceException();
@@ -27,7 +27,7 @@ public class PKMTeamServices : IPKMTeamService
         DoesTeamExist(id).Result ? _pkmTeamRepo.GetTeam(id) : throw new NullReferenceException();
 
     public Task<PokemonTeam> GetTeam(string name) =>
-        DoesTeamExist(name).Result ? _pkmTeamRepo.GetTeam(name) : throw new BadNameException();
+        DoesTeamExist(name).Result ? _pkmTeamRepo.GetTeam(name) : throw new NullReferenceException();
 
     public Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam) => 
         DoesTeamExist(pkmTeam.Id).Result ? _pkmTeamRepo.UpdateTeam(pkmTeam) : throw new NullReferenceException();
