@@ -11,8 +11,8 @@ using PokemonTeamBuilder.API.DB;
 namespace PokemonTeamBuilder.API.Migrations
 {
     [DbContext(typeof(PokemonTrainerDbContext))]
-    [Migration("20240501221132_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240502053804_InitialCreatePKM")]
+    partial class InitialCreatePKM
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,14 +146,12 @@ namespace PokemonTeamBuilder.API.Migrations
                         .HasColumnName("ID");
 
                     b.Property<int>("BaseStat")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "base_stat");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasAnnotation("Relational:JsonPropertyName", "name");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("PkmApiId")
                         .HasColumnType("int")
@@ -162,16 +160,13 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("URL")
-                        .HasAnnotation("Relational:JsonPropertyName", "url");
+                        .HasColumnName("URL");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PkmApiId");
 
                     b.ToTable("PokemonBaseStat", "PokemonTeamBuilder");
-
-                    b.HasAnnotation("Relational:JsonPropertyName", "stats");
                 });
 
             modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonMove", b =>
@@ -240,16 +235,14 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ID")
-                        .HasAnnotation("Relational:JsonPropertyName", "id");
+                        .HasColumnName("ID");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasAnnotation("Relational:JsonPropertyName", "name");
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id")
                         .HasName("PK__Pokemon___3214EC26604EAF0F");
@@ -292,8 +285,6 @@ namespace PokemonTeamBuilder.API.Migrations
                     b.HasKey("PkmApiId");
 
                     b.ToTable("PokemonSprite", "PokemonTeamBuilder");
-
-                    b.HasAnnotation("Relational:JsonPropertyName", "sprites");
                 });
 
             modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonStat", b =>

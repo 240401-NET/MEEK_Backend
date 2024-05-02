@@ -14,3 +14,10 @@ public interface IPTMRepository
     PokemonTeamMember UpdatePTM(PokemonTeamMember updatedPKM);
     PokemonTeam AddPkmToTeam(PokemonTeamMember newPKM, int teamId);
 }
+
+public interface IPKMAPIRepository
+{
+    PokemonPokeApi? GetPkmByIdFromDB(int id);
+    PokemonPokeApi? GetPkmByNameFromDB(string name);
+    void CreateNewPkmOnDB(PokemonPokeApi newPkm);
+}

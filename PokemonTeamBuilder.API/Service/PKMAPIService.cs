@@ -1,18 +1,21 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using PokemonTeamBuilder.API.Model;
+using PokemonTeamBuilder.API.Repository;
 using pkmAPIUtil = PokemonTeamBuilder.API.Model.Utilities.PKMAPIUtilities;
 
 namespace PokemonTeamBuilder.API.Service;
 
 public class PKMAPISevice : IPKMAPISevice
 {
+    private readonly IPKMAPIRepository _pkmAPIRepository;
     private readonly HttpClient _httpClient;    
     private readonly string _pkmAPIBaseUrl = "https://pokeapi.co/api/v2";
 
-    public PKMAPISevice(HttpClient httpClient)
+    public PKMAPISevice(HttpClient httpClient, IPKMAPIRepository pkmAPIRepository)
     {
         _httpClient = httpClient;
+        _pkmAPIRepository = pkmAPIRepository;
     }
 
     private async Task<HttpResponseMessage> CallPKMAPI(string endpoint)
@@ -61,12 +64,20 @@ public class PKMAPISevice : IPKMAPISevice
 
     public async Task<PokemonPokeApi> GetPokemonById(int pokemonId)
     {
-        string pathParam = "/pokemon/" + pokemonId;
-        string endpoint = _pkmAPIBaseUrl + pathParam;
+        PokemonPokeApi? pokemon = _pkmAPIRepository.GetPkmByIdFromDB(pokemonId);
 
-        var httpResponse = CallPKMAPI(endpoint);
+        if(pokemon is null)
+        {
+            string pathParam = "/pokemon/" + pokemonId;
+            string endpoint = _pkmAPIBaseUrl + pathParam;
 
-        return await HttpToPKM(httpResponse.Result);
+            var httpResponse = CallPKMAPI(endpoint);
+
+            pokemon = HttpToPKM(httpResponse.Result).Result;
+            _pkmAPIRepository.CreateNewPkmOnDB(pokemon);
+        }
+
+        return pokemon;        
     }
 
     public async Task<PokemonPokeApi> GetPokemonByName(string pokemonName)

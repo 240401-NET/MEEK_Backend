@@ -20,7 +20,9 @@ builder.Services.AddDbContext<PokemonTrainerDbContext>(options =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPKMTeamService, PKMTeamServices>();
 builder.Services.AddScoped<IPKMAPISevice, PKMAPISevice>();
+
 builder.Services.AddScoped<IPKMTeamRepo, PKMTeamRepository>();
+builder.Services.AddScoped<IPKMAPIRepository, PKMAPIRepository>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {

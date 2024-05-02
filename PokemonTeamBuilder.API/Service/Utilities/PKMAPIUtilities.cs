@@ -22,14 +22,14 @@ public static class PKMAPIUtilities
 
         PokemonPokeApi pokemon = new();
 
-        pokemon.Id = GetPkmId();
+        //pokemon.Id = GetPkmId();
         pokemon.Name = GetPkmName();
         pokemon.PokemonBaseStats = GetPkmStats();
-        pokemon.PokemonSprite = GetPkmSprites();
-        //pokemon.PokemonTeamMembers ???? Why does pokeAPI have this field?
-        pokemon.Abilities = GetPkmAbilities();
-        pokemon.Moves = GetPkmMoves();
-        pokemon.Types = GetPkmTypes();
+        // pokemon.PokemonSprite = GetPkmSprites();
+        // //pokemon.PokemonTeamMembers ???? Why does pokeAPI have this field?
+        // pokemon.Abilities = GetPkmAbilities();
+        // pokemon.Moves = GetPkmMoves();
+        // pokemon.Types = GetPkmTypes();
 
 
         
@@ -55,7 +55,7 @@ public static class PKMAPIUtilities
         {
             baseStats.Add(new PokemonBaseStat
                 {
-                    Id = i,
+                    //Id = i,
                     Name = statsJsonArray[i]!["stat"]!["name"]!.ToString(),
                     BaseStat = (int)statsJsonArray[i]!["base_stat"]!,
                     Url = statsJsonArray[i]!["stat"]!["url"]!.ToString(),
@@ -84,7 +84,7 @@ public static class PKMAPIUtilities
         {
             abilities.Add(new PokemonAbility
                 {
-                    Id = i,
+                    //Id = i,
                     IsHidden = (bool)abilitiesJsonArray[i]!["is_hidden"]!,
                     Slot = (int)abilitiesJsonArray[i]!["slot"]!,
                     Name = abilitiesJsonArray[i]!["ability"]!["name"]!.ToString(),
@@ -105,7 +105,7 @@ public static class PKMAPIUtilities
         {
             moves.Add(new PokemonMove
                 {
-                    Id = i,
+                    //Id = i,
                     Name = movesJsonArray[i]!["move"]!["name"]!.ToString(),
                     Url = movesJsonArray[i]!["move"]!["url"]!.ToString()
                 }
@@ -124,7 +124,7 @@ public static class PKMAPIUtilities
         {
             types.Add(new PokemonType
                 {
-                    Id = i,
+                    //Id = i,
                     Slot = (int)typesJsonArray[i]!["slot"]!,
                     Url = typesJsonArray[i]!["type"]!["url"]!.ToString(),
                     Name = typesJsonArray[i]!["type"]!["name"]!.ToString(),
