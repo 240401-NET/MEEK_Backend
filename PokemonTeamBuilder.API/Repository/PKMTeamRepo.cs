@@ -39,4 +39,11 @@ public class PKMTeamRepository : IPKMTeamRepo
         tempPKM.Id = -1;
         return tempPKM;
     }
+
+    public async Task<bool> DoesTeamExist(string name){
+        return (await _context.PokemonTeams.CountAsync(p => p.Name == name)) > 0 ? true : false;
+    }
+    public async Task<bool> DoesTeamExist(int id){
+        return (await _context.PokemonTeams.CountAsync(p => p.Id == id)) > 0 ? true : false;
+    }
 }

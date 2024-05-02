@@ -12,12 +12,12 @@ public class PKMTeamServices : IPKMTeamService
 
     public Task<PokemonTeam> CreateNewTeam(PokemonTeam team, int trainerID)
     {
-        throw new NotImplementedException();
+        return _pkmTeamRepo.CreateNewTeam(team, trainerID);
     }
 
     public Task<PokemonTeam> DeleteTeam(int id)
     {
-        throw new NotImplementedException();
+        return _pkmTeamRepo.DeleteTeam(id);
     }
 
     public Task<IEnumerable<PokemonTeam?>> GetAll(int trainerID)
@@ -28,16 +28,19 @@ public class PKMTeamServices : IPKMTeamService
 
     public Task<PokemonTeam> GetTeam(int id)
     {
-        throw new NotImplementedException();
+        return _pkmTeamRepo.GetTeam(id);
     }
 
     public Task<PokemonTeam> GetTeam(string name)
     {
-        throw new NotImplementedException();
+        return _pkmTeamRepo.GetTeam(name);
     }
 
     public Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam)
     {
-        throw new NotImplementedException();
+        return _pkmTeamRepo.UpdateTeam(pkmTeam);
     }
+
+    private Task<bool> DoesTeamExist(string name) => _pkmTeamRepo.DoesTeamExist(name);
+    private Task<bool> DoesTeamExist(int id) => _pkmTeamRepo.DoesTeamExist(id);
 }
