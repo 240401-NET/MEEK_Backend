@@ -73,7 +73,7 @@ public class PKMAPISevice : IPKMAPISevice
 
             var httpResponse = CallPKMAPI(endpoint);
 
-            pokemon = HttpToPKM(httpResponse.Result).Result;
+            pokemon = await HttpToPKM(httpResponse.Result);
             _pkmAPIRepository.CreateNewPkmOnDB(pokemon);
         }
 

@@ -22,14 +22,14 @@ public static class PKMAPIUtilities
 
         PokemonPokeApi pokemon = new();
 
-        //pokemon.Id = GetPkmId();
+        pokemon.Id = GetPkmId();
         pokemon.Name = GetPkmName();
         pokemon.PokemonBaseStats = GetPkmStats();
-        // pokemon.PokemonSprite = GetPkmSprites();
-        // //pokemon.PokemonTeamMembers ???? Why does pokeAPI have this field?
-        // pokemon.Abilities = GetPkmAbilities();
-        // pokemon.Moves = GetPkmMoves();
-        // pokemon.Types = GetPkmTypes();
+        pokemon.PokemonSprite = GetPkmSprites();
+        //pokemon.PokemonTeamMembers ???? Why does pokeAPI have this field?
+        pokemon.Abilities = GetPkmAbilities();
+        pokemon.Moves = GetPkmMoves();
+        pokemon.Types = GetPkmTypes();
 
 
         

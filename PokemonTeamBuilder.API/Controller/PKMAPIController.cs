@@ -15,11 +15,11 @@ public class PKMAPIController : ControllerBase{
 
     public PKMAPIController(IPKMAPISevice pkmAPISevice) => _pkmAPISevice = pkmAPISevice;
     
-    [HttpGet("/pokemon/id/")]
-    public IActionResult TestMe()
+    [HttpGet("/pokemon/id/{id}")]
+    public IActionResult TestMe(int id)
     {
-        _pkmAPISevice.TestMe();
-        return Ok();
+        PokemonPokeApi pkm = _pkmAPISevice.GetPokemonById(id).Result;
+        return Ok(pkm);
     }
     
 }

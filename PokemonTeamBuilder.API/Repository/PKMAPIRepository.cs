@@ -20,13 +20,8 @@ public class PKMAPIRepository : IPKMAPIRepository
     }
 
     public void CreateNewPkmOnDB(PokemonPokeApi newPkm)
-    {
-        PokemonPokeApi tempPKM = new();
-        tempPKM.Name = newPkm.Name;     
-        
-        //_pkmContext.PokemonPokeApis.Add(newPkm);
-        //_pkmContext.PokemonPokeApis.Add(tempPKM);
-        _pkmContext.PokemonBaseStats.Add(newPkm.PokemonBaseStats.First());
+    {        
+        _pkmContext.PokemonPokeApis.Add(newPkm);
         _pkmContext.SaveChanges();
         //return  _pkmContext.PokemonPokeApis.Find(newPkm.Id)!;
     }
