@@ -45,7 +45,7 @@ public class PTMService : IPTMService
         return null!;
     }
 
-    public PokemonTeamMember DeletePTMFromTeam(PokemonTeamMember deletePKM)
+    public PokemonTeam DeletePTMFromTeam(PokemonTeamMember deletePKM)
     {
         throw new NotImplementedException();
     }

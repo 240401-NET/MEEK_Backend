@@ -9,20 +9,26 @@ public class PTMRepository : IPTMRepository
 
     public PTMRepository(PokemonTrainerDbContext context) => _context = context;
 
+    public IEnumerable<PokemonTeamMember> GetAllPTMByTeamId(int teamId)
+    {
+        return _context.PokemonTeamMembers.Where(pkm => pkm.PokemonTeamId == teamId);
+    }    
+    
     public PokemonTeamMember GetPTMById(int id)
     {
         return _context.PokemonTeamMembers.FirstOrDefault(pkm => pkm.Id == id)!;
     }
+
+
+
+
+    
 
     public PokemonTeam GetPkmTeamById(int id)
     {
         return _context.PokemonTeams.FirstOrDefault(team => team.Id == id)!;
     }
     
-    public IEnumerable<PokemonTeamMember> GetAllPTMByTeamId(int teamId)
-    {
-        return _context.PokemonTeamMembers.Where(pkm => pkm.PokemonTeamId == teamId);
-    }
     
     public PokemonTeamMember UpdatePTM(PokemonTeamMember updatedPKM)
     {
