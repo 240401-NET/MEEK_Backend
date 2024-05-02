@@ -3,7 +3,13 @@ using PokemonTeamBuilder.API.Model;
 namespace PokemonTeamBuilder.API.Service;
 
 public interface IPKMTeamService{
-    public IEnumerable<PokemonTeam?> GetAll(int trainerID);
+    public Task<IEnumerable<PokemonTeam?>> GetAll(int trainerID);
+    public Task<PokemonTeam> GetTeam(int id);
+    public Task<PokemonTeam> GetTeam(string name);
+    public Task<PokemonTeam> CreateNewTeam(PokemonTeam team);
+    public Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam);
+    public Task<PokemonTeam> DeleteTeam(int id);
+
 }
 
 public interface IUserService
