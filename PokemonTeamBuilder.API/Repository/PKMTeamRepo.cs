@@ -26,10 +26,10 @@ public class PKMTeamRepository : IPKMTeamRepo
         return team;
     }
     public async Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam){
-        PokemonTeam team = _context.PokemonTeams.Where(p => p.Id == pkmTeam.Id).Single();
-        team = pkmTeam;
+        PokemonTeam oldTeam = GetTeam(pkmTeam.Id).Result;
+        _context.PokemonTeams.Entry(oldTeam).CurrentValues.SetValues(pkmTeam);
         await _context.SaveChangesAsync();
-        return team;
+        return pkmTeam;
     }
     public async Task<PokemonTeam> DeleteTeam(int id){
         PokemonTeam? tempPKM = GetTeam(id).Result;
