@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PokemonTeamBuilder.API.DB;
 using PokemonTeamBuilder.API.Model;
 
@@ -8,5 +9,34 @@ public class PKMTeamRepository : IPKMTeamRepo
 
     public PKMTeamRepository(PokemonTrainerDbContext context) => _context = context;
 
-    public IEnumerable<PokemonTeam?> GetAll(int trainerID) => _context.PokemonTeams.Where(p => p.TrainerId == trainerID).ToList();   
+    public async Task<IEnumerable<PokemonTeam?>> GetAll(int trainerID){     
+        IEnumerable<PokemonTeam?> returnTeams = _context.PokemonTeams.Include(c => c.PokemonTeamMembers).Where(p => p.TrainerId == trainerID);
+       return returnTeams;
+    } 
+
+    public async Task<PokemonTeam> GetTeam(int id) {
+        return await _context.PokemonTeams.Where(p => p.Id == id).SingleAsync();
+    }
+    public async Task<PokemonTeam> GetTeam(string name){
+        return await _context.PokemonTeams.Where(p => p.Name == name).SingleAsync();
+    }
+    public async Task<PokemonTeam> CreateNewTeam(PokemonTeam team, int trainerID){
+        team.TrainerId = trainerID;
+        _context.PokemonTeams.Add(team);
+        await _context.SaveChangesAsync();
+        return team;
+    }
+    public async Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam){
+        PokemonTeam team = _context.PokemonTeams.Where(p => p.Id == pkmTeam.Id).Single();
+        team = pkmTeam;
+        await _context.SaveChangesAsync();
+        return team;
+    }
+    public async Task<PokemonTeam> DeleteTeam(int id){
+        PokemonTeam? tempPKM = GetTeam(id).Result;
+        _context.PokemonTeams.Remove(tempPKM);
+        await _context.SaveChangesAsync();
+        tempPKM.Id = -1;
+        return tempPKM;
+    }
 }
