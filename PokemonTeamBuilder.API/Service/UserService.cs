@@ -5,18 +5,24 @@ namespace PokemonTeamBuilder.API.Service;
 
 public class UserService : IUserService
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public UserService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public UserService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
     }
 
+    public async Task<IdentityResult> GetCurrentUser()
+    {
+        
+        throw new NotImplementedException();
+    }
+
     public async Task<IdentityResult> RegisterUser(RegisterUser registration)
     {
-        IdentityUser user = new()
+        ApplicationUser user = new()
         {
             UserName = registration.Username,
             Email = registration.Email,

@@ -22,12 +22,13 @@ public class UserController : ControllerBase
     {
         var result = await _userService.RegisterUser(registration);
 
-        if(!result.Succeeded)
+        if(result.Succeeded)
         {
-            return BadRequest(result.Errors);
+            //create trainer associate with user
+            Console.WriteLine(result);
+            return Ok();
         }
-
-        return Ok();
+        return BadRequest(result.Errors);
     }
 
     [HttpPost("/login")]

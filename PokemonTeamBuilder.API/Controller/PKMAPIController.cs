@@ -29,7 +29,7 @@ public class PKMAPIController : ControllerBase{
     }
 
     [HttpGet("/pokemon/name/{name}")]
-    public IActionResult TestMe(string name)
+    public IActionResult GetPkmByName(string name)
     {
         var pkm = _pkmAPISevice.GetPokemonByName(name.ToLower()).Result;
         

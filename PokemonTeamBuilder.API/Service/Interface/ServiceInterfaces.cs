@@ -28,5 +28,14 @@ public interface IPKMAPISevice
 
 public interface IPTMService
 {
+    IEnumerable<PokemonTeamMember> GetAllPTMByTeamId(int teamId);
+    PokemonTeamMember UpdatePTM(PokemonTeamMember updatedPKM);
+    PokemonTeam AddPkmToTeam(PokemonTeamMember newPKM, int teamId);
+    PokemonTeam DeletePTMFromTeam(PokemonTeamMember deletePKM);
+    PokemonTeam DeleteAllPkmFromTeam(int teamId);
+}
+
+public interface ITrainerService
+{
 
 }

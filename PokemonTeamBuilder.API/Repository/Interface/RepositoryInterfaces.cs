@@ -29,3 +29,8 @@ public interface IPKMAPIRepository
     PokemonPokeApi? GetPkmByNameFromDB(string name);
     void CreateNewPkmOnDB(PokemonPokeApi newPkm);    
 }
+
+public interface ITrainerRepository
+{
+    
+}
