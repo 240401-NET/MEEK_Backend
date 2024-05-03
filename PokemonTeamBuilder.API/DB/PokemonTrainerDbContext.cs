@@ -72,9 +72,7 @@ public partial class PokemonTrainerDbContext : DbContext
         {
             entity.ToTable("PokemonBaseStat", "PokemonTeamBuilder");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.PkmApiId).HasColumnName("PKM_API_ID");
             entity.Property(e => e.Url).HasColumnName("URL");

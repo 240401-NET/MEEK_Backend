@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PokemonTeamBuilder.API.DB;
 using PokemonTeamBuilder.API.Model;
 
@@ -11,18 +12,37 @@ public class PKMAPIRepository : IPKMAPIRepository
 
     public PokemonPokeApi? GetPkmByIdFromDB(int id)
     {
-        return _pkmContext.PokemonPokeApis.FirstOrDefault(pkm => pkm.Id == id);
+        var pokemon = _pkmContext.PokemonPokeApis
+        .Include(pkm => pkm.PokemonBaseStats)
+        .Include(pkm => pkm.PokemonSprite)
+        .Include(pkm => pkm.PokemonTeamMembers)
+        .Include(pkm => pkm.Abilities)
+        .Include(pkm => pkm.Moves)
+        .Include(pkm => pkm.Types)
+        .FirstOrDefault(pkm => pkm.Id == id);
+        
+        return pokemon;
     }
 
     public PokemonPokeApi? GetPkmByNameFromDB(string name)
     {
-        return _pkmContext.PokemonPokeApis.FirstOrDefault(pkm => pkm.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        var pkmId = _pkmContext.PokemonPokeApis
+        .Where(pkm => pkm.Name.Equals(name))?
+        .FirstOrDefault()?
+        .Id;
+
+        if(pkmId is not null)
+        {
+            var pokemon = GetPkmByIdFromDB((int)pkmId);
+            return pokemon;
+        }
+
+        return null;
     }
 
     public void CreateNewPkmOnDB(PokemonPokeApi newPkm)
     {        
         _pkmContext.PokemonPokeApis.Add(newPkm);
         _pkmContext.SaveChanges();
-        //return  _pkmContext.PokemonPokeApis.Find(newPkm.Id)!;
     }
 }

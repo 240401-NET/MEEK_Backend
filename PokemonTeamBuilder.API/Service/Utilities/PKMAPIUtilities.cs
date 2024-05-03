@@ -1,5 +1,7 @@
+using System.Numerics;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using Microsoft.VisualBasic;
 
 namespace PokemonTeamBuilder.API.Model.Utilities;
@@ -26,7 +28,7 @@ public static class PKMAPIUtilities
         pokemon.Name = GetPkmName();
         pokemon.PokemonBaseStats = GetPkmStats();
         pokemon.PokemonSprite = GetPkmSprites();
-        //pokemon.PokemonTeamMembers ???? Why does pokeAPI have this field?
+        // //pokemon.PokemonTeamMembers ???? Why does pokeAPI have this field?
         pokemon.Abilities = GetPkmAbilities();
         pokemon.Moves = GetPkmMoves();
         pokemon.Types = GetPkmTypes();

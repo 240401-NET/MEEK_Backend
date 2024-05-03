@@ -142,6 +142,7 @@ namespace PokemonTeamBuilder.API.Migrations
             modelBuilder.Entity("PokemonTeamBuilder.API.Model.PokemonBaseStat", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ID");
 

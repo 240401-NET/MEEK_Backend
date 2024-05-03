@@ -16,9 +16,28 @@ public class PKMAPIController : ControllerBase{
     public PKMAPIController(IPKMAPISevice pkmAPISevice) => _pkmAPISevice = pkmAPISevice;
     
     [HttpGet("/pokemon/id/{id}")]
-    public IActionResult TestMe(int id)
+    public IActionResult GetPkmById(int id)
     {
-        PokemonPokeApi pkm = _pkmAPISevice.GetPokemonById(id).Result;
+        var pkm = _pkmAPISevice.GetPokemonById(id).Result;
+
+        if(pkm is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(pkm);
+    }
+
+    [HttpGet("/pokemon/name/{name}")]
+    public IActionResult TestMe(string name)
+    {
+        var pkm = _pkmAPISevice.GetPokemonByName(name.ToLower()).Result;
+        
+        if(pkm is null)
+        {
+            return NotFound();
+        }
+
         return Ok(pkm);
     }
     

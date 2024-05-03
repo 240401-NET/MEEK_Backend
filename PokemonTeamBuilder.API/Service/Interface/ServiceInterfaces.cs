@@ -18,7 +18,6 @@ public interface IPKMAPISevice
     Task<IEnumerable<PokemonNameandURL>> GetAllPokemon();
     Task<PokemonPokeApi> GetPokemonById(int pokemonId);
     Task<PokemonPokeApi> GetPokemonByName(string pokemonName);
-    void TestMe();
 }
 
 public interface IPTMService

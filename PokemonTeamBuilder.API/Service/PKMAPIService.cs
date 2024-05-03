@@ -66,37 +66,45 @@ public class PKMAPISevice : IPKMAPISevice
     {
         PokemonPokeApi? pokemon = _pkmAPIRepository.GetPkmByIdFromDB(pokemonId);
 
-        if(pokemon is null)
+        if(pokemon is not null)
         {
-            string pathParam = "/pokemon/" + pokemonId;
-            string endpoint = _pkmAPIBaseUrl + pathParam;
+            return pokemon;
+        }
 
-            var httpResponse = CallPKMAPI(endpoint);
+        string pathParam = "/pokemon/" + pokemonId;
+        string endpoint = _pkmAPIBaseUrl + pathParam;
 
+        var httpResponse = CallPKMAPI(endpoint);
+
+        if(httpResponse is not null && httpResponse.Result.IsSuccessStatusCode)
+        {
             pokemon = await HttpToPKM(httpResponse.Result);
             _pkmAPIRepository.CreateNewPkmOnDB(pokemon);
         }
 
-        return pokemon;        
+        return pokemon!;               
     }
 
     public async Task<PokemonPokeApi> GetPokemonByName(string pokemonName)
     {
+        PokemonPokeApi? pokemon = _pkmAPIRepository.GetPkmByNameFromDB(pokemonName);
+
+        if(pokemon is not null)
+        {
+            return pokemon;
+        }
+        
         string pathParam = "/pokemon/" + pokemonName;
         string endpoint = _pkmAPIBaseUrl + pathParam;
 
         var httpResponse = CallPKMAPI(endpoint);
 
-        return await HttpToPKM(httpResponse.Result);
-    }
+        if(httpResponse is not null && httpResponse.Result.IsSuccessStatusCode)
+        {
+            pokemon = await HttpToPKM(httpResponse.Result);
+            _pkmAPIRepository.CreateNewPkmOnDB(pokemon);
+        }
 
-    public void TestMe()
-    {
-        int pokemonId = 80;
-        string pokemonName = "pikachu";
-
-        PokemonPokeApi pkm80 = GetPokemonById(pokemonId).Result;
-        PokemonPokeApi pkmPika = GetPokemonByName(pokemonName).Result;
-        
+        return pokemon!;
     }
 }
