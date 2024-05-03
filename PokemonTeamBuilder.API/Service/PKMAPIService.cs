@@ -35,6 +35,16 @@ public class PKMAPISevice : IPKMAPISevice
         return null!;
     }
 
+    public static async Task<ItemPokeApi> HTTPToItem(HttpResponseMessage httpResponse){
+        if(httpResponse is not null && httpResponse.IsSuccessStatusCode)
+        {
+            var responseBody = await httpResponse.Content.ReadAsStringAsync();
+            JsonNode pokemonJSON = JsonNode.Parse(responseBody)!;
+            ItemPokeApi pkmAPIRes = pkmAPIUtil.ItemFromJson(pokemonJSON);
+            return pkmAPIRes;       
+        }
+        return null!;
+    }
     public async Task<IEnumerable<PokemonNameandURL>> GetAllPokemon()
     {
         string pathParam = "/pokemon";
@@ -106,5 +116,24 @@ public class PKMAPISevice : IPKMAPISevice
         }
 
         return pokemon!;
+    }
+
+    public async Task<ItemPokeApi> GetItemById(int itemID){
+        ItemPokeApi? item = _pkmAPIRepository.GetItemByIDFromDB(itemID);
+        if (item is not null)
+            return item;
+
+        string pathParam = "/item/" + itemID;
+        string endpoint = _pkmAPIBaseUrl + pathParam;
+
+        var httpResponse = CallPKMAPI(endpoint);
+
+        if(httpResponse is not null && httpResponse.Result.IsSuccessStatusCode)
+        {
+            item = await HTTPToItem(httpResponse.Result);
+            _pkmAPIRepository.CreateNewItemOnDB(item);
+        }
+
+        return item!; 
     }
 }

@@ -45,4 +45,12 @@ public class PKMAPIRepository : IPKMAPIRepository
         _pkmContext.PokemonPokeApis.Add(newPkm);
         _pkmContext.SaveChanges();
     }
+    public void CreateNewItemOnDB(ItemPokeApi newItem){
+        _pkmContext.ItemPokeApis.Add(newItem);
+        _pkmContext.SaveChanges();
+    }
+
+    public ItemPokeApi? GetItemByIDFromDB(int id){
+        return _pkmContext.ItemPokeApis.Where(i => i.Id == id).FirstOrDefault();
+    }
 }

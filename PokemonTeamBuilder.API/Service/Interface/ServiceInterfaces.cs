@@ -24,6 +24,7 @@ public interface IPKMAPISevice
     Task<IEnumerable<PokemonNameandURL>> GetAllPokemon();
     Task<PokemonPokeApi> GetPokemonById(int pokemonId);
     Task<PokemonPokeApi> GetPokemonByName(string pokemonName);
+    Task<ItemPokeApi> GetItemById(int itemID);
 }
 
 public interface IPTMService
@@ -31,5 +32,5 @@ public interface IPTMService
     public PokemonTeam AddPkmToTeam(PokemonTeamMember newPKM, int teamId);
     public PokemonTeamMember UpdatePTM(PokemonTeamMember updatedPKM);
     public IEnumerable<PokemonTeamMember> GetAllPTMByTeamId(int teamId);
-    
+
 }

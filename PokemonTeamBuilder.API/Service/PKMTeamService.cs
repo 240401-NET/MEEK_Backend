@@ -20,6 +20,7 @@ public class PKMTeamServices : IPKMTeamService
         // All data should come in, but just incase we'll check cache
         foreach(PokemonTeamMember pkmTM in pkmTeam.PokemonTeamMembers){
             pkmTM.PkmApi = _pkmAPIService.GetPokemonById(pkmTM.PkmApiId).Result;
+            pkmTM.HeldItem = _pkmAPIService.GetItemById(pkmTM.HeldItemId).Result;
         }
         return DoesTeamExist(pkmTeam.Id).Result ? throw new ObjectExistException("This team is already in our database, please update the team.") : _pkmTeamRepo.CreateNewTeam(pkmTeam);
     }

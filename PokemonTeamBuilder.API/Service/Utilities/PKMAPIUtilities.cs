@@ -138,4 +138,19 @@ public static class PKMAPIUtilities
 
         return types;
     }
+
+    public static ItemPokeApi ItemFromJson(JsonNode itemJson){
+        SetPkmJsonDoc(itemJson);
+        
+        if(_pkmJson is null) 
+            throw new ArgumentNullException("Pokemon Json doc was null");
+
+        ItemPokeApi item = new();
+
+        item.Id = GetPkmId();
+        item.Name = GetPkmName();
+        item.Sprite = (string)_pkmJson!["sprites"]!["default"]!;
+        
+        return item;
+    }
 }

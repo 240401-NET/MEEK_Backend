@@ -28,4 +28,6 @@ public interface IPKMAPIRepository
     PokemonPokeApi? GetPkmByIdFromDB(int id);
     PokemonPokeApi? GetPkmByNameFromDB(string name);
     void CreateNewPkmOnDB(PokemonPokeApi newPkm);    
+    void CreateNewItemOnDB(ItemPokeApi newItem);
+    ItemPokeApi? GetItemByIDFromDB(int id);
 }
