@@ -10,6 +10,7 @@ public partial class PokemonPokeApi
     public string Name { get; set; } = null!;
     public virtual ICollection<PokemonBaseStat> PokemonBaseStats { get; set; } = new List<PokemonBaseStat>();
     public virtual PokemonSprite? PokemonSprite { get; set; }    
+    [JsonIgnore]
     public virtual ICollection<PokemonTeamMember> PokemonTeamMembers { get; set; } = new List<PokemonTeamMember>();
     public virtual ICollection<PokemonAbility> Abilities { get; set; } = new List<PokemonAbility>();
     public virtual ICollection<PokemonMove> Moves { get; set; } = new List<PokemonMove>();

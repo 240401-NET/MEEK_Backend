@@ -14,5 +14,6 @@ public partial class PokemonBaseStat
     public string Url { get; set; } = null!;
     public int PkmApiId { get; set; }
 
+    [JsonIgnore]
     public virtual PokemonPokeApi PkmApi { get; set; } = null!;
 }

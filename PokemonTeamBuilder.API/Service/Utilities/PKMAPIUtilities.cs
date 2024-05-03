@@ -32,8 +32,6 @@ public static class PKMAPIUtilities
         pokemon.Abilities = GetPkmAbilities();
         pokemon.Moves = GetPkmMoves();
         pokemon.Types = GetPkmTypes();
-
-
         
         return pokemon;
     }
@@ -73,6 +71,10 @@ public static class PKMAPIUtilities
     {
         JsonNode spritesJson = _pkmJson!["sprites"]!;
         PokemonSprite pkmSprites = JsonSerializer.Deserialize<PokemonSprite>(spritesJson)!;
+        pkmSprites.FrontDefault ??= "none";
+        pkmSprites.FrontShiny ??= "none";
+        pkmSprites.FrontFemale ??= "none";
+        pkmSprites.FrontShinyFemale ??= "none";
         pkmSprites.PkmApiId = GetPkmId();
         return pkmSprites;
     }
