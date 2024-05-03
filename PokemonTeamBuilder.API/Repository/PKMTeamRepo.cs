@@ -20,7 +20,8 @@ public class PKMTeamRepository : IPKMTeamRepo
         return await _context.PokemonTeams.Where(p => p.Name == name).SingleAsync();
     }
     public async Task<PokemonTeam> CreateNewTeam(PokemonTeam team){
-        _context.PokemonTeams.Add(team);
+        team.Trainer = _context.Trainers.Where(p => p.Id == team.TrainerId).SingleAsync();
+        _context.PokemonTeams.AddAsync(team);
         await _context.SaveChangesAsync();
         return team;
     }

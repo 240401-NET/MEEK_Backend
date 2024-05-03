@@ -39,5 +39,5 @@ public partial class PokemonTeamMember
 
     public virtual ICollection<PokemonStat> PokemonStats { get; set; } = new List<PokemonStat>();
 
-    public virtual PokemonTeam PokemonTeam { get; set; } = null!;
+    public virtual PokemonTeam? PokemonTeam { get; set; } = null!;
 }
