@@ -28,5 +28,8 @@ public interface IPKMAPISevice
 
 public interface IPTMService
 {
-
+    public PokemonTeam AddPkmToTeam(PokemonTeamMember newPKM, int teamId);
+    public PokemonTeamMember UpdatePTM(PokemonTeamMember updatedPKM);
+    public IEnumerable<PokemonTeamMember> GetAllPTMByTeamId(int teamId);
+    
 }
