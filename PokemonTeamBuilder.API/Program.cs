@@ -4,12 +4,21 @@ using PokemonTeamBuilder.API.DB;
 using PokemonTeamBuilder.API.Model;
 using PokemonTeamBuilder.API.Service;
 using PokemonTeamBuilder.API.Repository;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(co => {
+    co.AddPolicy("name" , pb =>{
+        pb.WithOrigins("http://localhost:5173", "http://otherlocalhost:port")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
 builder.Services.AddDbContext<UserDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("UserID_Local")));
 
@@ -40,6 +49,14 @@ builder.Services.AddControllers()
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// builder.Services.AddAuthentication()
+//     .AddBearerToken(IdentityConstants.BearerScheme);
+
+// builder.Services.AddAuthorizationBuilder()
+//     .AddPolicy("api", p => {
+//         p.RequireAuthenticatedUser();
+//         p.AddAuthenticationSchemes(IdentityConstants.BearerScheme);
+//     });
 
 var app = builder.Build();
 
@@ -51,6 +68,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.MapIdentityApi<IdentityUser>();
+app.UseCors("name");
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
