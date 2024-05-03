@@ -17,15 +17,22 @@ public class PKMTeamServices : IPKMTeamService
     }
 
     public async Task<PokemonTeam> CreateNewTeam(PokemonTeam pkmTeam){
-        pkmTeam = DoesTeamExist(pkmTeam.Id).Result ? throw new ObjectExistException("This team is already in our database, please update the team.") : _pkmTeamRepo.CreateNewTeam(pkmTeam).Result;
+        pkmTeam = DoesTeamExist(pkmTeam.Id).Result ? throw new ObjectExistException("This team is already in our database, please update the team.") 
+            : _pkmTeamRepo.CreateNewTeam(new PokemonTeam(){
+                Name = pkmTeam.Name,
+                TrainerId = pkmTeam.TrainerId,
+            }).Result;
         // All data should come in, but just incase we'll check cache
         foreach(PokemonTeamMember pkmTM in pkmTeam.PokemonTeamMembers){
             pkmTM.PkmApi = _pkmAPIService.GetPokemonById(pkmTM.PkmApiId).Result;
+            Console.WriteLine("Line 27: PkmApi passed.");
             pkmTM.HeldItem = _pkmAPIService.GetItemById(pkmTM.HeldItemId).Result;
-            //_pkmTMService.AddPkmToTeam(pkmTM)
-
+            Console.WriteLine("Line 29: HeldItem passed.");
+            _pkmTMService.AddPkmToTeam(pkmTM, pkmTeam.Id);
+            pkmTM.HeldItem.PokemonTeamMembers.Add(pkmTM);
         }
-        return pkmTeam;
+        
+        return await _pkmTeamRepo.UpdateTeam(pkmTeam);
     }
 
     public Task<PokemonTeam> DeleteTeam(int id){
