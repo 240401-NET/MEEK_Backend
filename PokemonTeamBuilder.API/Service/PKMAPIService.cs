@@ -1,18 +1,21 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Microsoft.VisualBasic;
 using PokemonTeamBuilder.API.Model;
+using PokemonTeamBuilder.API.Repository;
+using pkmAPIUtil = PokemonTeamBuilder.API.Model.Utilities.PKMAPIUtilities;
 
 namespace PokemonTeamBuilder.API.Service;
 
 public class PKMAPISevice : IPKMAPISevice
 {
+    private readonly IPKMAPIRepository _pkmAPIRepository;
     private readonly HttpClient _httpClient;    
     private readonly string _pkmAPIBaseUrl = "https://pokeapi.co/api/v2";
 
-    public PKMAPISevice(HttpClient httpClient)
+    public PKMAPISevice(HttpClient httpClient, IPKMAPIRepository pkmAPIRepository)
     {
         _httpClient = httpClient;
+        _pkmAPIRepository = pkmAPIRepository;
     }
 
     private async Task<HttpResponseMessage> CallPKMAPI(string endpoint)
@@ -20,10 +23,22 @@ public class PKMAPISevice : IPKMAPISevice
         return await _httpClient.GetAsync(endpoint);
     }
 
+    private static async Task<PokemonPokeApi> HttpToPKM(HttpResponseMessage httpResponse)
+    {
+        if(httpResponse is not null && httpResponse.IsSuccessStatusCode)
+        {
+            var responseBody = await httpResponse.Content.ReadAsStringAsync();
+            JsonNode pokemonJSON = JsonNode.Parse(responseBody)!;
+            PokemonPokeApi pkmAPIRes = pkmAPIUtil.PokemonFromJson(pokemonJSON);
+            return pkmAPIRes;       
+        }
+        return null!;
+    }
+
     public async Task<IEnumerable<PokemonNameandURL>> GetAllPokemon()
     {
         string pathParam = "/pokemon";
-        string queryString = "?limit=10";
+        string queryString = "?limit=1000000";
         string endpoint = _pkmAPIBaseUrl + pathParam + queryString;
 
         var httpResponse = CallPKMAPI(endpoint);
@@ -49,6 +64,13 @@ public class PKMAPISevice : IPKMAPISevice
 
     public async Task<PokemonPokeApi> GetPokemonById(int pokemonId)
     {
+        PokemonPokeApi? pokemon = _pkmAPIRepository.GetPkmByIdFromDB(pokemonId);
+
+        if(pokemon is not null)
+        {
+            return pokemon;
+        }
+
         string pathParam = "/pokemon/" + pokemonId;
         string endpoint = _pkmAPIBaseUrl + pathParam;
 
@@ -56,53 +78,33 @@ public class PKMAPISevice : IPKMAPISevice
 
         if(httpResponse is not null && httpResponse.Result.IsSuccessStatusCode)
         {
-            var responseBody = await httpResponse.Result.Content.ReadAsStringAsync();
-
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
-            PokemonPokeApi pkmAPIRes = JsonSerializer.Deserialize<PokemonPokeApi>(responseBody, options ?? null)!;
-
-            return pkmAPIRes;       
+            pokemon = await HttpToPKM(httpResponse.Result);
+            _pkmAPIRepository.CreateNewPkmOnDB(pokemon);
         }
 
-        return null!;
+        return pokemon!;               
     }
 
-    public async void TestMe()
+    public async Task<PokemonPokeApi> GetPokemonByName(string pokemonName)
     {
-        int pokemonId = 1;
-        string pathParam = "/pokemon/" + pokemonId;
+        PokemonPokeApi? pokemon = _pkmAPIRepository.GetPkmByNameFromDB(pokemonName);
+
+        if(pokemon is not null)
+        {
+            return pokemon;
+        }
+        
+        string pathParam = "/pokemon/" + pokemonName;
         string endpoint = _pkmAPIBaseUrl + pathParam;
 
         var httpResponse = CallPKMAPI(endpoint);
 
         if(httpResponse is not null && httpResponse.Result.IsSuccessStatusCode)
         {
-            var responseBody = await httpResponse.Result.Content.ReadAsStringAsync();
-
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
-            JsonNode pokemonJSON = JsonNode.Parse(responseBody)!;
-
-            JsonArray testing = pokemonJSON["stats"]!.AsArray();
-
-            foreach(JsonNode stat in testing)
-            {
-                //Console.WriteLine(stat);
-            }
-
-
-
-            //Console.WriteLine(testing);
-
-            //PokemonPokeApi pkmAPIRes = JsonSerializer.Deserialize<PokemonPokeApi>(responseBody, options ?? null)!;
-   
+            pokemon = await HttpToPKM(httpResponse.Result);
+            _pkmAPIRepository.CreateNewPkmOnDB(pokemon);
         }
+
+        return pokemon!;
     }
 }

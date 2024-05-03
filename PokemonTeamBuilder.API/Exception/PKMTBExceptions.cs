@@ -2,7 +2,14 @@ namespace PokemonTeamBuilder.API.Exceptoins;
 public class EmptyListException:Exception{
     public EmptyListException(){}
     public EmptyListException(string message):base(message){}
-    public EmptyListException(string message, Exception inner):base(message, inner){}
+    public EmptyListException(string message, Exception inner):base(message, inner){}    
+}
+
+public class PkmTeamSizeException:Exception
+{
+    public PkmTeamSizeException(){}
+    public PkmTeamSizeException(string message):base(message){}
+    public PkmTeamSizeException(string message, Exception inner):base(message, inner){}
 }
 
 public class ObjectExistException:Exception{
@@ -12,13 +19,7 @@ public class ObjectExistException:Exception{
 }
 
 public class BadNameException:Exception{
-    public BadNameException(){
-
-    }
-    public BadNameException(string _message):base(_message){
-
-    }
-    public BadNameException(string _message, Exception _inner):base(_message, _inner){
-
-    }
+    public BadNameException(){}
+    public BadNameException(string _message):base(_message){}
+    public BadNameException(string _message, Exception _inner):base(_message, _inner){}
 }

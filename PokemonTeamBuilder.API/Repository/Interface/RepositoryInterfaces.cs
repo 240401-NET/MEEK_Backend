@@ -11,4 +11,21 @@ public interface IPKMTeamRepo{
     // Not Exposed
     public Task<bool> DoesTeamExist(string name);
     public Task<bool> DoesTeamExist(int id);
+
+}
+
+public interface IPTMRepository
+{
+    PokemonTeamMember GetPTMById(int id);
+    PokemonTeam GetPkmTeamById(int id);
+    IEnumerable<PokemonTeamMember> GetAllPTMByTeamId(int teamId);
+    PokemonTeamMember UpdatePTM(PokemonTeamMember updatedPKM);
+    PokemonTeam AddPkmToTeam(PokemonTeamMember newPKM, int teamId);
+}
+
+public interface IPKMAPIRepository
+{
+    PokemonPokeApi? GetPkmByIdFromDB(int id);
+    PokemonPokeApi? GetPkmByNameFromDB(string name);
+    void CreateNewPkmOnDB(PokemonPokeApi newPkm);    
 }
