@@ -19,5 +19,5 @@ public partial class PokemonSprite
     public int PkmApiId { get; set; }
 
     [JsonIgnore]
-    public virtual PokemonPokeApi PkmApi { get; set; } = null!;
+    public virtual PokemonPokeApi? PkmApi { get; set; } = null!;
 }

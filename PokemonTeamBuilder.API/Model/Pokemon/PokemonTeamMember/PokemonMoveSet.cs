@@ -15,5 +15,5 @@ public partial class PokemonMoveSet
 
     public int PkmTmId { get; set; }
 
-    public virtual PokemonTeamMember PkmTm { get; set; } = null!;
+    public virtual PokemonTeamMember? PkmTm { get; set; } = null!;
 }

@@ -19,5 +19,5 @@ public partial class PokemonStat
 
     public int Id { get; set; }
 
-    public virtual PokemonTeamMember PkmTm { get; set; } = null!;
+    public virtual PokemonTeamMember? PkmTm { get; set; } = null!;
 }
