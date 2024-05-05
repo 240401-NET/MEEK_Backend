@@ -9,8 +9,14 @@ public class PKMTeamRepository : IPKMTeamRepo
 
     public PKMTeamRepository(PokemonTrainerDbContext context) => _context = context;
 
-    public async Task<IEnumerable<PokemonTeam?>> GetAll(int trainerID){     
-       return await _context.PokemonTeams.Include(c => c.PokemonTeamMembers).Where(p => p.TrainerId == trainerID).ToListAsync();
+    public IEnumerable<PokemonTeam> GetAll(int trainerID)
+    {     
+       return _context.PokemonTeams
+        .Include(team => team.PokemonTeamMembers)
+        .ThenInclude(pkm => pkm.PokemonStats)
+        .Include(team => team.PokemonTeamMembers)
+        .ThenInclude(pkm => pkm.PokemonMoveSet)
+        .Where(team => team.TrainerId == trainerID);
     } 
 
     public async Task<PokemonTeam> GetTeam(int id) {
@@ -19,9 +25,10 @@ public class PKMTeamRepository : IPKMTeamRepo
     public async Task<PokemonTeam> GetTeam(string name){
         return await _context.PokemonTeams.Where(p => p.Name == name).SingleAsync();
     }
-    public async Task<PokemonTeam> CreateNewTeam(PokemonTeam team){
+    public PokemonTeam CreateNewTeam(PokemonTeam team)
+    {
         _context.PokemonTeams.Add(team);
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
         return team;
     }
     public async Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam){

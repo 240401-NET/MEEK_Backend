@@ -7,5 +7,5 @@ namespace PokemonTeamBuilder.API.Model;
 
 public class ApplicationUser : IdentityUser
 {
-    public string? TrainerId { get; set; }
+    public int? TrainerId { get; set; }
 }

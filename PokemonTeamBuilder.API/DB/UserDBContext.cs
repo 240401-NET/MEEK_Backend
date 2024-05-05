@@ -10,5 +10,5 @@ public class UserDBContext : IdentityDbContext<ApplicationUser>
     public UserDBContext() : base() {}
     public UserDBContext(DbContextOptions<UserDBContext> options) : base(options) {}
 
-    //public DbSet<IdentityUser> Users{ get; set; }
+    public virtual DbSet<ApplicationUser> AppUsers{ get; set; }
 }

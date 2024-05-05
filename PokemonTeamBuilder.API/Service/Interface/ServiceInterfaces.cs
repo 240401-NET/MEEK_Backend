@@ -1,22 +1,26 @@
 using Microsoft.AspNetCore.Identity;
+using PokemonTeamBuilder.API.DTO;
 using PokemonTeamBuilder.API.Model;
 namespace PokemonTeamBuilder.API.Service;
 
-public interface IPKMTeamService{
-    public Task<IEnumerable<PokemonTeam?>> GetAll(int trainerID);
-    public Task<PokemonTeam> GetTeam(int id);
-    public Task<PokemonTeam> GetTeam(string name);
-    public Task<PokemonTeam> CreateNewTeam(PokemonTeam team);
-    public Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam);
-    public Task<PokemonTeam> DeleteTeam(int id);
+public interface IPKMTeamService
+{
+    IEnumerable<PokemonTeam> GetAll(int trainerID);
+    Task<PokemonTeam> GetTeam(int id);
+    Task<PokemonTeam> GetTeam(string name);
+    PokemonTeam CreateNewTeam(PokemonTeamDTO pkmTeam, int trainerId);
+    Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam);
+    Task<PokemonTeam> DeleteTeam(int id);
 
 }
 
 public interface IUserService
 {
+    void CreateTrainerForUser(string username);
     Task<IdentityResult> RegisterUser(RegisterUser registration);
-    Task<SignInResult> LoginUser(LoginUser login, bool? useCookies, bool? useSessionCookies);
+    Task<SignInResult> LoginUser(LoginUser login);
     void Logout();
+    ApplicationUser? GetUserByName(string username);
 }
 
 public interface IPKMAPISevice
@@ -37,5 +41,6 @@ public interface IPTMService
 
 public interface ITrainerService
 {
-
+    Trainer CreateTrainer(string name);
+    int GetTrainerIdByUsername(string username);
 }

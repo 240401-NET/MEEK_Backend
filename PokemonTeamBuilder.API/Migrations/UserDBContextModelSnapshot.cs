@@ -8,7 +8,7 @@ using PokemonTeamBuilder.API.DB;
 
 #nullable disable
 
-namespace PokemonTeamBuilder.API.Migrations.UserDB
+namespace PokemonTeamBuilder.API.Migrations
 {
     [DbContext(typeof(UserDBContext))]
     partial class UserDBContextModelSnapshot : ModelSnapshot
@@ -200,8 +200,8 @@ namespace PokemonTeamBuilder.API.Migrations.UserDB
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TrainerId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("TrainerId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");

@@ -2,6 +2,8 @@ using Microsoft.IdentityModel.Tokens;
 using PokemonTeamBuilder.API.Model;
 using PokemonTeamBuilder.API.Repository;
 using PokemonTeamBuilder.API.Exceptoins;
+using PokemonTeamBuilder.API.DTO;
+using pkmtUtil = PokemonTeamBuilder.API.Utilities.PKMTeamUtilities;
 
 namespace PokemonTeamBuilder.API.Service;
 
@@ -9,32 +11,38 @@ public class PKMTeamServices : IPKMTeamService
 {
     private readonly IPKMTeamRepo _pkmTeamRepo;
     private readonly IPKMAPISevice _pkmAPIService;
-    private readonly IPTMService _pkmTMService;
+    private readonly IPTMService _ptmService;
     public PKMTeamServices(IPKMTeamRepo pkmTeamRepo, IPKMAPISevice pkmAPIService, IPTMService pkmTMService){
         _pkmTeamRepo = pkmTeamRepo; 
         _pkmAPIService = pkmAPIService;
-        _pkmTMService = pkmTMService;
+        _ptmService = pkmTMService;
     }
 
-    public Task<PokemonTeam> CreateNewTeam(PokemonTeam pkmTeam){
+    public PokemonTeam CreateNewTeam(PokemonTeamDTO pkmTeam, int trainerId){
         // All data should come in, but just incase we'll check cache
-        foreach(PokemonTeamMember pkmTM in pkmTeam.PokemonTeamMembers){
-            pkmTM.PkmApi = _pkmAPIService.GetPokemonById(pkmTM.PkmApiId).Result;
+        PokemonTeam newTeam = _pkmTeamRepo.CreateNewTeam(new(){Name = pkmTeam.Name, TrainerId = trainerId});
+
+        int teamId = newTeam.Id;
+
+        if(newTeam is null)
+        {
+            return null!;
         }
-        return DoesTeamExist(pkmTeam.Id).Result ? throw new ObjectExistException("This team is already in our database, please update the team.") : _pkmTeamRepo.CreateNewTeam(pkmTeam);
-    }
 
-    public Task<PokemonTeam> DeleteTeam(int id){
-        // delete the team member as well.
-        return DoesTeamExist(id).Result ? _pkmTeamRepo.DeleteTeam(id) : throw new NullReferenceException("The team does not exist in the database.");
-    }
-    
+        try
+        {
+            foreach(TeamMemberDTO teamMember in pkmTeam.TeamMembers)
+            {
+                PokemonTeamMember newMember = pkmtUtil.PkmTMFromDTO(teamMember);
+                newMember.PokemonTeamId = teamId;
+                _ptmService.AddPkmToTeam(newMember, teamId);
+            }
+        }catch(PkmTeamSizeException e)
+        {
+            Console.WriteLine(e.Message);
+        }
 
-    public Task<IEnumerable<PokemonTeam?>> GetAll(int trainerID)
-    {
-        // get team members as well
-        Task<IEnumerable<PokemonTeam?>> returnList = _pkmTeamRepo.GetAll(trainerID);
-        return returnList.Result.ToList().IsNullOrEmpty() ? throw new EmptyListException("The list is empty.") : returnList;
+        return newTeam;
     }
 
     public Task<PokemonTeam> GetTeam(int id){
@@ -47,7 +55,15 @@ public class PKMTeamServices : IPKMTeamService
         return DoesTeamExist(name).Result ? _pkmTeamRepo.GetTeam(name) : throw new NullReferenceException("The team does not exist in the database.");
     }
 
-    public Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam){
+    public IEnumerable<PokemonTeam> GetAll(int trainerID)
+    {
+        // get team members as well
+        var returnList = _pkmTeamRepo.GetAll(trainerID);
+        return returnList;
+    }
+
+    public Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam)
+    {
         // Get the old PokemonTeamMember list
         // check each pokemon (by roster order)
         // if the old pokemon in spot 'n' is different from the new pokemon in spot 'n'
@@ -57,6 +73,16 @@ public class PKMTeamServices : IPKMTeamService
 
         return DoesTeamExist(pkmTeam.Id).Result ? _pkmTeamRepo.UpdateTeam(pkmTeam) : throw new NullReferenceException("The team does not exist in the database.");
     }
+
+    public Task<PokemonTeam> DeleteTeam(int id){
+        // delete the team member as well.
+        return DoesTeamExist(id).Result ? _pkmTeamRepo.DeleteTeam(id) : throw new NullReferenceException("The team does not exist in the database.");
+    }  
+
+
+    
+
+    
 
     private Task<bool> DoesTeamExist(string name) => _pkmTeamRepo.DoesTeamExist(name);
     private Task<bool> DoesTeamExist(int id) => _pkmTeamRepo.DoesTeamExist(id);

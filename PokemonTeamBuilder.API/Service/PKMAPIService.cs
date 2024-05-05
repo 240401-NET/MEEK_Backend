@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using PokemonTeamBuilder.API.Model;
 using PokemonTeamBuilder.API.Repository;
-using pkmAPIUtil = PokemonTeamBuilder.API.Model.Utilities.PKMAPIUtilities;
+using pkmAPIUtil = PokemonTeamBuilder.API.Utilities.PKMAPIUtilities;
 
 namespace PokemonTeamBuilder.API.Service;
 

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PokemonTeamBuilder.API.DB;
 using PokemonTeamBuilder.API.Model;
 using PokemonTeamBuilder.API.Service;
@@ -12,10 +13,11 @@ public class TrainerRepository : ITrainerRepository
 
     public Trainer CreateTrainer(string name)
     {
-        _trainerContext.Trainers.Add(new Trainer(){Name = name});
+       Trainer newTrainer = new(){Name = name};
+        _trainerContext.Trainers.Add(newTrainer);
         _trainerContext.SaveChanges();
 
-        return GetTrainerByName(name)!;
+        return newTrainer;
     }
 
     public Trainer? GetTrainerById(int id)
@@ -26,8 +28,7 @@ public class TrainerRepository : ITrainerRepository
 
     public Trainer? GetTrainerByName(string name)
     {
-        var trainer = _trainerContext.Trainers.Where(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-
+        var trainer = _trainerContext.Trainers.FirstOrDefault(x => x.Name.Equals(name));
         return trainer;
     }
 

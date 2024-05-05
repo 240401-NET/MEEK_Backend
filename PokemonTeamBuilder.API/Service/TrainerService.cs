@@ -6,11 +6,21 @@ namespace PokemonTeamBuilder.API.Service;
 public class TrainerService : ITrainerService
 {
     private readonly ITrainerRepository _trainerRepository;
+    private readonly IUserRepository _userRepository;
 
-    public TrainerService(ITrainerRepository trainerRepository) => _trainerRepository = trainerRepository;
+    public TrainerService(ITrainerRepository trainerRepository, IUserRepository userRepository)
+    {
+        _trainerRepository = trainerRepository;
+        _userRepository = userRepository;
+    }
     
     public Trainer CreateTrainer(string name)
     {
-        throw new NotImplementedException();
+        return _trainerRepository.CreateTrainer(name);
+    }
+
+    public int GetTrainerIdByUsername(string username)
+    {
+        return _userRepository.GetTrainerId(username);
     }
 }

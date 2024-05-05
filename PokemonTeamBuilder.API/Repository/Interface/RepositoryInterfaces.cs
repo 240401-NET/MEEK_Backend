@@ -2,15 +2,15 @@ using PokemonTeamBuilder.API.Model;
 namespace PokemonTeamBuilder.API.Repository;
 public interface IPKMTeamRepo{
     // Exposed
-    public Task<IEnumerable<PokemonTeam?>> GetAll(int trainerID);
-    public Task<PokemonTeam> GetTeam(int id);
-    public Task<PokemonTeam> GetTeam(string name);
-    public Task<PokemonTeam> CreateNewTeam(PokemonTeam pkmTeam);
-    public Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam);
-    public Task<PokemonTeam> DeleteTeam(int id);
+    IEnumerable<PokemonTeam> GetAll(int trainerID);
+    Task<PokemonTeam> GetTeam(int id);
+    Task<PokemonTeam> GetTeam(string name);
+    PokemonTeam CreateNewTeam(PokemonTeam pkmTeam);
+    Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam);
+    Task<PokemonTeam> DeleteTeam(int id);
     // Not Exposed
-    public Task<bool> DoesTeamExist(string name);
-    public Task<bool> DoesTeamExist(int id);
+    Task<bool> DoesTeamExist(string name);
+    Task<bool> DoesTeamExist(int id);
 
 }
 
@@ -32,5 +32,15 @@ public interface IPKMAPIRepository
 
 public interface ITrainerRepository
 {
-    
+    Trainer CreateTrainer(string name);
+    Trainer? GetTrainerById(int id);
+    Trainer? GetTrainerByName(string name);
+    void DeleteTrainer(Trainer trainer);
+}
+
+public interface IUserRepository
+{
+    void AddTrainerToUser(string username, Trainer trainer);
+    ApplicationUser? GetUserByName(string username);
+    int GetTrainerId(string username);
 }

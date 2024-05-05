@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PokemonTeamBuilder.API.Migrations.UserDB
+namespace PokemonTeamBuilder.API.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -30,6 +30,7 @@ namespace PokemonTeamBuilder.API.Migrations.UserDB
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TrainerId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

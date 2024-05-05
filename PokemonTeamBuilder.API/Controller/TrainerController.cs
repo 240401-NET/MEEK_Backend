@@ -10,16 +10,23 @@ namespace PokemonTeamBuilder.API.Controller;
 [ApiController]
 public class TrainerController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly ITrainerService _trainerService;
 
-    public TrainerController(IUserService userService)
+    public TrainerController(ITrainerService trainerService)
     {
-        _userService = userService;
+        _trainerService = trainerService;
     }
 
     [HttpGet("/Trainer"), Authorize]
     public IActionResult GetTrainer()
     {
         return Ok(HttpContext.User.Identity?.Name);
+    }
+
+    [HttpPost("/Trainer"), Authorize]
+    public IActionResult CreateTrainer(string name)
+    {
+        return Ok(_trainerService.CreateTrainer(name));        
+        //return Ok(HttpContext.User.Identity?.Name);
     }
 }
