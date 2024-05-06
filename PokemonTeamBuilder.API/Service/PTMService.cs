@@ -54,12 +54,4 @@ public class PTMService : IPTMService
     {
         throw new NotImplementedException();
     }
-
-
 }
-
-// GetPTM(int teamID) --Retrieve list of pokemon apart of the team by team id and return it.
-// UpdatePTM(PokemonTeamMember pkm) --Update pokemon team member and return newly updated pokemon.
-// AddPTM(PokemonTeamMember pkm, int teamID) --Retrieve team by id and adds pokemon to the team. Return a team.
-// DeletePTM(PokemonPokeAPI pokemon) --Delete the pokemon from the database and return it with id = -1.
-// DeletePTM(int teamID) --Delete all pokemon from team and return and empty list.

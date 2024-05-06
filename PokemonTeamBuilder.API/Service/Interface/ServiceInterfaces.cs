@@ -10,7 +10,7 @@ public interface IPKMTeamService
     Task<PokemonTeam> GetTeam(string name);
     PokemonTeam CreateNewTeam(PokemonTeamDTO pkmTeam, int trainerId);
     PokemonTeam UpdateTeam(PokemonTeamDTO pkmTeam, int trainerId);
-    Task<PokemonTeam> DeleteTeam(int id);
+    PokemonTeam DeleteTeam(int trainerId, int teamId);
 
 }
 
@@ -24,10 +24,13 @@ public interface IUserService
 }
 
 public interface IPKMAPISevice
-{
+{   
     Task<IEnumerable<PokemonNameandURL>> GetAllPokemon();
     Task<PokemonPokeApi> GetPokemonById(int pokemonId);
     Task<PokemonPokeApi> GetPokemonByName(string pokemonName);
+    Task<PokemonPokeApi> GetPokemonFromAPI(string endpoint);
+    PokemonPokeApi? GetPkmFromDB(int id);
+    PokemonPokeApi? GetPkmFromDB(string name);
 }
 
 public interface IPTMService

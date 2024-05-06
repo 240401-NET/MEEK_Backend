@@ -49,11 +49,10 @@ public class PKMTeamRepository : IPKMTeamRepo
         _context.SaveChanges();
         return oldTeam;
     }
-    public async Task<PokemonTeam> DeleteTeam(int id){
-        PokemonTeam? tempPKM = GetTeam(id).Result;
+    public PokemonTeam DeleteTeam(int id){
+        PokemonTeam tempPKM = GetTeam(id).Result;
         _context.PokemonTeams.Remove(tempPKM);
-        await _context.SaveChangesAsync();
-        tempPKM.Id = -1;
+        _context.SaveChanges();
         return tempPKM;
     }
 

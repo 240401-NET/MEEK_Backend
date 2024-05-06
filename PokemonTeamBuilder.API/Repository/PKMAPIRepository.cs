@@ -10,7 +10,7 @@ public class PKMAPIRepository : IPKMAPIRepository
 
     public PKMAPIRepository(PokemonTrainerDbContext pkmContext) => _pkmContext = pkmContext;
 
-    public PokemonPokeApi? GetPkmByIdFromDB(int id)
+    public PokemonPokeApi? GetPkmFromDB(int id)
     {
         var pokemon = _pkmContext.PokemonPokeApis
         .Include(pkm => pkm.PokemonBaseStats)
@@ -24,7 +24,7 @@ public class PKMAPIRepository : IPKMAPIRepository
         return pokemon;
     }
 
-    public PokemonPokeApi? GetPkmByNameFromDB(string name)
+    public PokemonPokeApi? GetPkmFromDB(string name)
     {
         var pkmId = _pkmContext.PokemonPokeApis
         .Where(pkm => pkm.Name.Equals(name))?
@@ -33,7 +33,7 @@ public class PKMAPIRepository : IPKMAPIRepository
 
         if(pkmId is not null)
         {
-            var pokemon = GetPkmByIdFromDB((int)pkmId);
+            var pokemon = GetPkmFromDB((int)pkmId);
             return pokemon;
         }
 

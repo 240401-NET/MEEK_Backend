@@ -8,7 +8,7 @@ public interface IPKMTeamRepo{
     Task<PokemonTeam> GetTeam(string name);
     PokemonTeam CreateNewTeam(PokemonTeam pkmTeam);
     PokemonTeam UpdateTeam(PokemonTeam pkmTeam);
-    Task<PokemonTeam> DeleteTeam(int id);
+    PokemonTeam DeleteTeam(int id);
     // Not Exposed
     Task<bool> DoesTeamExist(string name);
     Task<bool> DoesTeamExist(int id);
@@ -26,8 +26,8 @@ public interface IPTMRepository
 
 public interface IPKMAPIRepository
 {
-    PokemonPokeApi? GetPkmByIdFromDB(int id);
-    PokemonPokeApi? GetPkmByNameFromDB(string name);
+    PokemonPokeApi? GetPkmFromDB(int id);
+    PokemonPokeApi? GetPkmFromDB(string name);
     void CreateNewPkmOnDB(PokemonPokeApi newPkm);    
 }
 

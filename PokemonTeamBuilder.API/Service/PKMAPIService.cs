@@ -64,47 +64,40 @@ public class PKMAPISevice : IPKMAPISevice
 
     public async Task<PokemonPokeApi> GetPokemonById(int pokemonId)
     {
-        PokemonPokeApi? pokemon = _pkmAPIRepository.GetPkmByIdFromDB(pokemonId);
-
-        if(pokemon is not null)
-        {
-            return pokemon;
-        }
-
         string pathParam = "/pokemon/" + pokemonId;
-        string endpoint = _pkmAPIBaseUrl + pathParam;
-
-        var httpResponse = CallPKMAPI(endpoint);
-
-        if(httpResponse is not null && httpResponse.Result.IsSuccessStatusCode)
-        {
-            pokemon = await HttpToPKM(httpResponse.Result);
-            _pkmAPIRepository.CreateNewPkmOnDB(pokemon);
-        }
-
-        return pokemon!;               
+        string endpoint = _pkmAPIBaseUrl + pathParam;        
+        PokemonPokeApi pokemon = GetPkmFromDB(pokemonId) ?? await GetPokemonFromAPI(endpoint);
+        return pokemon;               
     }
 
     public async Task<PokemonPokeApi> GetPokemonByName(string pokemonName)
     {
-        PokemonPokeApi? pokemon = _pkmAPIRepository.GetPkmByNameFromDB(pokemonName);
-
-        if(pokemon is not null)
-        {
-            return pokemon;
-        }
-        
         string pathParam = "/pokemon/" + pokemonName;
-        string endpoint = _pkmAPIBaseUrl + pathParam;
+        string endpoint = _pkmAPIBaseUrl + pathParam;        
+        PokemonPokeApi pokemon = GetPkmFromDB(pokemonName) ?? await GetPokemonFromAPI(endpoint);
+        return pokemon!;
+    }
 
+    public async Task<PokemonPokeApi> GetPokemonFromAPI(string endpoint)
+    {
         var httpResponse = CallPKMAPI(endpoint);
-
+        
         if(httpResponse is not null && httpResponse.Result.IsSuccessStatusCode)
         {
-            pokemon = await HttpToPKM(httpResponse.Result);
+            PokemonPokeApi pokemon = await HttpToPKM(httpResponse.Result);
             _pkmAPIRepository.CreateNewPkmOnDB(pokemon);
+            return pokemon;
         }
+        return null!;
+    }
 
-        return pokemon!;
+    public PokemonPokeApi? GetPkmFromDB(int id)
+    {
+        return _pkmAPIRepository.GetPkmFromDB(id);
+    }
+
+    public PokemonPokeApi? GetPkmFromDB(string name)
+    {
+        return _pkmAPIRepository.GetPkmFromDB(name);
     }
 }

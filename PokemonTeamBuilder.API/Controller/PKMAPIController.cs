@@ -15,6 +15,18 @@ public class PKMAPIController : ControllerBase{
 
     public PKMAPIController(IPKMAPISevice pkmAPISevice) => _pkmAPISevice = pkmAPISevice;
     
+    [HttpGet("/pokemon")]
+    public IActionResult GetAllPokemon()
+    {
+        var allPokemon = _pkmAPISevice.GetAllPokemon();
+
+        if(allPokemon is null)
+        {
+            return NotFound();
+        }
+        return Ok(allPokemon);
+    }
+    
     [HttpGet("/pokemon/id/{id}")]
     public IActionResult GetPkmById(int id)
     {

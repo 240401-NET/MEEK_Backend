@@ -23,43 +23,9 @@ public class PKMTeamController : ControllerBase{
         _userService = userService;
         _ptmService = ptmService;
         _trainerService = trainerService;
-    }
+    }           
     
-    [HttpGet("/TestMe")]
-    public IActionResult TestMe()
-    {
-        PokemonTeam pkmTeam = new();
-        
-        if(User.Identity!.IsAuthenticated)
-        {
-            string username = User.Identity.Name!;
-            var user = _userService.GetUserByName(username);
-            pkmTeam.TrainerId = (int)user!.TrainerId!;
-        }
-        
-        return Ok(pkmTeam);
-    }
-
-    [HttpGet("/TestMe2")]
-    public IActionResult TestMe2()
-    {
-        PokemonTeamDTO pkmTeam = new();  
-        // pkmTeam.PokemonStats.Add(new PokemonStat());     
-        // pkmTeam.PokemonStats.Add(new PokemonStat());     
-        return Ok(pkmTeam);
-    }
-
-    [HttpPost("/PostPkmTM")]
-    public IActionResult TestMe3(PokemonTeamMember pkmTM, [FromQuery]int teamId)
-    {
-        var pkmTeam = _ptmService.AddPkmToTeam(pkmTM, teamId);        
-        return Ok(pkmTeam);
-    }
-
-    //---------------------------------------TESTING ABOVE------------------             
-    
-    [Authorize]
-    [HttpGet("/Teams")]
+    [HttpGet("/Team"), Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetAllTeams(){
         int trainerID = _trainerService.GetTrainerIdByUsername(User!.Identity!.Name!);
@@ -74,8 +40,7 @@ public class PKMTeamController : ControllerBase{
         return Ok(teamList);        
     }
     
-    [Authorize]
-    [HttpPost("/Team")]
+    [HttpPost("/Team"), Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult CreateNewTeam([FromBody] PokemonTeamDTO pkmTeam){
         int trainerID = _trainerService.GetTrainerIdByUsername(User!.Identity!.Name!);
@@ -89,8 +54,7 @@ public class PKMTeamController : ControllerBase{
         return Ok(newTeam);        
     }
 
-    [Authorize]
-    [HttpPut("/Team")]
+    [HttpPut("/Team"), Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult UpdateTeam([FromBody] PokemonTeamDTO pkmTeam)
     {
@@ -106,18 +70,24 @@ public class PKMTeamController : ControllerBase{
     }
 
     // Check for login user here!
-    [HttpDelete("/Team/{id}")]
+    [HttpDelete("/Team"), Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<IEnumerable<PokemonTeam>> DeleteTeam(int id){
-        try{
-            return Ok(_pkmTeamService.DeleteTeam(id));
-        }catch(NullReferenceException e){
-            return Conflict(e.Message);
+    public IActionResult DeleteTeam([FromBody] DeletePokemonTeamDTO deleteTeam)
+    {
+        int trainerID = _trainerService.GetTrainerIdByUsername(User!.Identity!.Name!);
+        int teamIdToDelete = deleteTeam.Id;
+        
+        var teamDeleted = _pkmTeamService.DeleteTeam(trainerID, teamIdToDelete);
+        
+        if(teamDeleted is null)
+        {
+            return BadRequest();
         }
+
+        return Ok(teamDeleted);
     }
 
-    // Check for login user here!
-    [HttpGet("/Team/id={id}")]
+    [HttpGet("/Team/id={id}"), Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult<IEnumerable<PokemonTeam>> GetTeam(int id){
         try{
@@ -127,7 +97,7 @@ public class PKMTeamController : ControllerBase{
         }
     }
 
-    [HttpGet("/Team/name={name}")]
+    [HttpGet("/Team/name={name}"), Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult<IEnumerable<PokemonTeam>> GetTeam(string name){
         try{
@@ -135,7 +105,5 @@ public class PKMTeamController : ControllerBase{
         }catch(NullReferenceException e){
             return Conflict(e.Message);
         }
-    }
-
-   
+    }   
 }

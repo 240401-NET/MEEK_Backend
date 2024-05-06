@@ -94,31 +94,18 @@ public class PKMTeamServices : IPKMTeamService
         newTeam.PokemonTeamMembers = newTeam.PokemonTeamMembers.Take(6).ToList();
 
         return _pkmTeamRepo.UpdateTeam(newTeam);
-        
-        //var oldTeam = _pkmTeamRepo.GetTeam(teamId);
-        
-        
-        
-        
-        // Get the old PokemonTeamMember list
-        // check each pokemon (by roster order)
-        // if the old pokemon in spot 'n' is different from the new pokemon in spot 'n'
-        //      delete the old pokemon.
-        // If they are the same, update the old pokemon with new pokemon information 
-        // If there is no new pokemon in spot 'n' delete the old pokemon.
-
-        //return DoesTeamExist(pkmTeam.Id).Result ? _pkmTeamRepo.UpdateTeam(pkmTeam) : throw new NullReferenceException("The team does not exist in the database.");
     }
 
-    public Task<PokemonTeam> DeleteTeam(int id){
-        // delete the team member as well.
-        return DoesTeamExist(id).Result ? _pkmTeamRepo.DeleteTeam(id) : throw new NullReferenceException("The team does not exist in the database.");
-    }  
+    public PokemonTeam DeleteTeam(int trainerId, int teamId){
+        List<int> allTeamId = _pkmTeamRepo.GetAllTeamId(trainerId);
 
+        if(!allTeamId.Contains(teamId))
+        {
+            return null!;
+        }
 
-    
-
-    
+        return _pkmTeamRepo.DeleteTeam(teamId);
+    }      
 
     private Task<bool> DoesTeamExist(string name) => _pkmTeamRepo.DoesTeamExist(name);
     private Task<bool> DoesTeamExist(int id) => _pkmTeamRepo.DoesTeamExist(id);

@@ -42,3 +42,5 @@ public record struct PokemonStatDTO
     int Individual,
     string Name
 );
+
+public record struct DeletePokemonTeamDTO(int Id);
