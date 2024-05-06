@@ -22,18 +22,18 @@ public class UserController : ControllerBase
     {
         var result = await _userService.RegisterUser(registration);
 
-        if(!result.Succeeded)
+        if(result.Succeeded)
         {
-            return BadRequest(result.Errors);
-        }
-
-        return Ok();
+            _userService.CreateTrainerForUser(registration.Username);
+            return Ok();
+        }        
+        return BadRequest(result.Errors);
     }
 
     [HttpPost("/login")]
-    public async Task<IActionResult> LoginUser([FromBody] LoginUser login, [FromQuery] bool? useCookies, [FromQuery] bool? useSessionCookies)
+    public async Task<IActionResult> LoginUser([FromBody] LoginUser login)
     {        
-        var result = await _userService.LoginUser(login, useCookies, useSessionCookies);
+        var result = await _userService.LoginUser(login);
 
         if(!result.Succeeded)
         {

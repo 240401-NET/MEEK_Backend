@@ -7,6 +7,8 @@ namespace PokemonTeamBuilder.API.Model;
 
 public partial class PokemonSprite
 {
+    [JsonIgnore]
+    public int Id { get; set; }    
     [JsonPropertyName("front_default")]
     public string FrontDefault { get; set; } = "";
     [JsonPropertyName("front_shiny")]

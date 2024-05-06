@@ -21,18 +21,22 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPKMTeamService, PKMTeamServices>();
 builder.Services.AddScoped<IPKMAPISevice, PKMAPISevice>();
 builder.Services.AddScoped<IPTMService, PTMService>();
+builder.Services.AddScoped<ITrainerService, TrainerService>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPKMTeamRepo, PKMTeamRepository>();
 builder.Services.AddScoped<IPKMAPIRepository, PKMAPIRepository>();
 builder.Services.AddScoped<IPTMRepository, PTMRepository>();
+builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
     options.Password.RequiredLength = 8;
 })
 .AddEntityFrameworkStores<UserDBContext>()
-.AddSignInManager<SignInManager<IdentityUser>>();
+.AddSignInManager<SignInManager<ApplicationUser>>();
 
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();

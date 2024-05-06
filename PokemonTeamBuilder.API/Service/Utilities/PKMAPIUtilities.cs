@@ -3,8 +3,9 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Microsoft.VisualBasic;
+using PokemonTeamBuilder.API.Model;
 
-namespace PokemonTeamBuilder.API.Model.Utilities;
+namespace PokemonTeamBuilder.API.Utilities;
 
 public static class PKMAPIUtilities
 {
