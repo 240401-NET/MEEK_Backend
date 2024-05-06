@@ -5,10 +5,10 @@ namespace PokemonTeamBuilder.API.Service;
 
 public interface IPKMTeamService
 {
-    IEnumerable<PokemonTeam> GetAll(int trainerID);
+    PokemonTeam CreateNewTeam(PokemonTeamDTO pkmTeam, int trainerId);
     Task<PokemonTeam> GetTeam(int id);
     Task<PokemonTeam> GetTeam(string name);
-    PokemonTeam CreateNewTeam(PokemonTeamDTO pkmTeam, int trainerId);
+    IEnumerable<PokemonTeam> GetAll(int trainerID);
     PokemonTeam UpdateTeam(PokemonTeamDTO pkmTeam, int trainerId);
     PokemonTeam DeleteTeam(int trainerId, int teamId);
 

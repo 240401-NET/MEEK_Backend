@@ -9,10 +9,10 @@ using PokemonTeamBuilder.API.DB;
 
 #nullable disable
 
-namespace PokemonTeamBuilder.API.Migrations
+namespace PokemonTeamBuilder.API.Migrations.UserDB
 {
     [DbContext(typeof(UserDBContext))]
-    [Migration("20240505224222_InitialCreate")]
+    [Migration("20240506064955_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

@@ -17,9 +17,9 @@ public interface IPKMTeamRepo{
 
 public interface IPTMRepository
 {
+    IEnumerable<PokemonTeamMember> GetAllPTMByTeamId(int teamId);
     PokemonTeamMember GetPTMById(int id);
     PokemonTeam GetPkmTeamById(int id);
-    IEnumerable<PokemonTeamMember> GetAllPTMByTeamId(int teamId);
     PokemonTeamMember UpdatePTM(PokemonTeamMember updatedPKM);
     PokemonTeam AddPkmToTeam(PokemonTeamMember newPKM, int teamId);
 }

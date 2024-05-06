@@ -8,7 +8,7 @@ using PokemonTeamBuilder.API.DB;
 
 #nullable disable
 
-namespace PokemonTeamBuilder.API.Migrations
+namespace PokemonTeamBuilder.API.Migrations.UserDB
 {
     [DbContext(typeof(UserDBContext))]
     partial class UserDBContextModelSnapshot : ModelSnapshot

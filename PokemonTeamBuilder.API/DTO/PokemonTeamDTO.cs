@@ -7,6 +7,7 @@ public record struct PokemonTeamDTO(int? Id, string Name, ICollection<TeamMember
 public record struct TeamMemberDTO
 (
     int PkmApiId,
+    string? Name,
     string? NickName,
     int Level,
     string ChosenAbility,

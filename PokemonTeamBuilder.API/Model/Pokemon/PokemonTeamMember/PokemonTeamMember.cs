@@ -7,6 +7,7 @@ namespace PokemonTeamBuilder.API.Model;
 public partial class PokemonTeamMember
 {
     public int Id { get; set; }
+    public string Name { get; set; } = "";
     public int PkmApiId { get; set; }
     public string? NickName { get; set; } = null;
     public int Level { get; set; } = 100;

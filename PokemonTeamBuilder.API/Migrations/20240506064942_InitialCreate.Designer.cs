@@ -9,10 +9,10 @@ using PokemonTeamBuilder.API.DB;
 
 #nullable disable
 
-namespace PokemonTeamBuilder.API.Migrations.PokemonTrainerDb
+namespace PokemonTeamBuilder.API.Migrations
 {
     [DbContext(typeof(PokemonTrainerDbContext))]
-    [Migration("20240505225355_InitialCreate")]
+    [Migration("20240506064942_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -339,6 +339,10 @@ namespace PokemonTeamBuilder.API.Migrations.PokemonTrainerDb
 
                     b.Property<int>("Level")
                         .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nature")
                         .IsRequired()

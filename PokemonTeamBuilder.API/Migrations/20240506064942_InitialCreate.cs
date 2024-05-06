@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace PokemonTeamBuilder.API.Migrations.PokemonTrainerDb
+namespace PokemonTeamBuilder.API.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -239,6 +239,7 @@ namespace PokemonTeamBuilder.API.Migrations.PokemonTrainerDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PkmApiId = table.Column<int>(type: "int", nullable: false),
                     NickName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Level = table.Column<int>(type: "int", nullable: false),

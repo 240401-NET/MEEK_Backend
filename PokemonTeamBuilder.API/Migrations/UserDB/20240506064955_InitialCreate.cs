@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PokemonTeamBuilder.API.Migrations
+namespace PokemonTeamBuilder.API.Migrations.UserDB
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

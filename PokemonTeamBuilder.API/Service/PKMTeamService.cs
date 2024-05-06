@@ -13,6 +13,7 @@ public class PKMTeamServices : IPKMTeamService
     private readonly IPKMTeamRepo _pkmTeamRepo;
     private readonly IPKMAPISevice _pkmAPIService;
     private readonly IPTMService _ptmService;
+    private readonly string _pkmAPIBaseUrl = "https://pokeapi.co/api/v2/pokemon/";
     public PKMTeamServices(IPKMTeamRepo pkmTeamRepo, IPKMAPISevice pkmAPIService, IPTMService pkmTMService){
         _pkmTeamRepo = pkmTeamRepo; 
         _pkmAPIService = pkmAPIService;
@@ -35,6 +36,14 @@ public class PKMTeamServices : IPKMTeamService
             foreach(TeamMemberDTO teamMember in pkmTeam.PokemonTeamMembers)
             {
                 PokemonTeamMember newMember = pkmtUtil.PkmTMFromDTO(teamMember);
+                int pokeAPIId = newMember.PkmApiId;
+                
+                var officialPoke = _pkmAPIService.GetPkmFromDB(pokeAPIId);
+                officialPoke ??= _pkmAPIService.GetPokemonFromAPI(_pkmAPIBaseUrl + pokeAPIId).Result;
+
+                if(officialPoke is null) continue;
+                
+                newMember.Name = officialPoke.Name;
                 newMember.PokemonTeamId = teamId;
                 _ptmService.AddPkmToTeam(newMember, teamId);
             }
