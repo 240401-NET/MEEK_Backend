@@ -6,7 +6,6 @@ namespace PokemonTeamBuilder.API.Model;
 
 public partial class PokemonTeam
 {
-    //[JsonIgnore]
     public int Id { get; set; }
     public string Name { get; set; } = null!;
     [JsonIgnore]

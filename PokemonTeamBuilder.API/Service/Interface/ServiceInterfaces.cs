@@ -9,7 +9,7 @@ public interface IPKMTeamService
     Task<PokemonTeam> GetTeam(int id);
     Task<PokemonTeam> GetTeam(string name);
     PokemonTeam CreateNewTeam(PokemonTeamDTO pkmTeam, int trainerId);
-    Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam);
+    PokemonTeam UpdateTeam(PokemonTeamDTO pkmTeam, int trainerId);
     Task<PokemonTeam> DeleteTeam(int id);
 
 }

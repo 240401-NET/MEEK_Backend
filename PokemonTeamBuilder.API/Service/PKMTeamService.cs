@@ -4,6 +4,7 @@ using PokemonTeamBuilder.API.Repository;
 using PokemonTeamBuilder.API.Exceptoins;
 using PokemonTeamBuilder.API.DTO;
 using pkmtUtil = PokemonTeamBuilder.API.Utilities.PKMTeamUtilities;
+using System.Collections.ObjectModel;
 
 namespace PokemonTeamBuilder.API.Service;
 
@@ -31,7 +32,7 @@ public class PKMTeamServices : IPKMTeamService
 
         try
         {
-            foreach(TeamMemberDTO teamMember in pkmTeam.TeamMembers)
+            foreach(TeamMemberDTO teamMember in pkmTeam.PokemonTeamMembers)
             {
                 PokemonTeamMember newMember = pkmtUtil.PkmTMFromDTO(teamMember);
                 newMember.PokemonTeamId = teamId;
@@ -62,8 +63,43 @@ public class PKMTeamServices : IPKMTeamService
         return returnList;
     }
 
-    public Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam)
+    public PokemonTeam UpdateTeam(PokemonTeamDTO pkmTeamDTO, int trainerId)
     {
+        int teamId = pkmTeamDTO.Id ?? -1;
+
+        if(teamId == -1)
+        {
+            return null!;
+        }
+
+        List<int> allTeamId = _pkmTeamRepo.GetAllTeamId(trainerId);
+
+        if(!allTeamId.Contains(teamId))
+        {
+            return null!;
+        }
+
+        PokemonTeam oldTeam = _pkmTeamRepo.GetTeam(teamId).Result!;
+        PokemonTeam newTeam = new();
+        newTeam.Id = oldTeam.Id;
+        newTeam.Name = pkmTeamDTO.Name;
+        
+        foreach(TeamMemberDTO pkmMember in pkmTeamDTO.PokemonTeamMembers)
+        {
+            PokemonTeamMember newMember = pkmtUtil.PkmTMFromDTO(pkmMember);
+            newMember.PokemonTeamId = teamId;
+            newTeam.PokemonTeamMembers.Add(newMember);
+        }
+
+        newTeam.PokemonTeamMembers = newTeam.PokemonTeamMembers.Take(6).ToList();
+
+        return _pkmTeamRepo.UpdateTeam(newTeam);
+        
+        //var oldTeam = _pkmTeamRepo.GetTeam(teamId);
+        
+        
+        
+        
         // Get the old PokemonTeamMember list
         // check each pokemon (by roster order)
         // if the old pokemon in spot 'n' is different from the new pokemon in spot 'n'
@@ -71,7 +107,7 @@ public class PKMTeamServices : IPKMTeamService
         // If they are the same, update the old pokemon with new pokemon information 
         // If there is no new pokemon in spot 'n' delete the old pokemon.
 
-        return DoesTeamExist(pkmTeam.Id).Result ? _pkmTeamRepo.UpdateTeam(pkmTeam) : throw new NullReferenceException("The team does not exist in the database.");
+        //return DoesTeamExist(pkmTeam.Id).Result ? _pkmTeamRepo.UpdateTeam(pkmTeam) : throw new NullReferenceException("The team does not exist in the database.");
     }
 
     public Task<PokemonTeam> DeleteTeam(int id){

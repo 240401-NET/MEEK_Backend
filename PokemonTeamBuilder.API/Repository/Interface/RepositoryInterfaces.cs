@@ -3,10 +3,11 @@ namespace PokemonTeamBuilder.API.Repository;
 public interface IPKMTeamRepo{
     // Exposed
     IEnumerable<PokemonTeam> GetAll(int trainerID);
+    List<int> GetAllTeamId(int trainerId);
     Task<PokemonTeam> GetTeam(int id);
     Task<PokemonTeam> GetTeam(string name);
     PokemonTeam CreateNewTeam(PokemonTeam pkmTeam);
-    Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam);
+    PokemonTeam UpdateTeam(PokemonTeam pkmTeam);
     Task<PokemonTeam> DeleteTeam(int id);
     // Not Exposed
     Task<bool> DoesTeamExist(string name);

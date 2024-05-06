@@ -2,7 +2,7 @@ using PokemonTeamBuilder.API.Model;
 
 namespace PokemonTeamBuilder.API.DTO;
 
-public record struct PokemonTeamDTO(string Name, ICollection<TeamMemberDTO> TeamMembers);
+public record struct PokemonTeamDTO(int? Id, string Name, ICollection<TeamMemberDTO> PokemonTeamMembers);
 
 public record struct TeamMemberDTO
 (

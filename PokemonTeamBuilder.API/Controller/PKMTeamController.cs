@@ -61,7 +61,7 @@ public class PKMTeamController : ControllerBase{
     [Authorize]
     [HttpGet("/Teams")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<IEnumerable<PokemonTeam>> GetAllTeams(){
+    public IActionResult GetAllTeams(){
         int trainerID = _trainerService.GetTrainerIdByUsername(User!.Identity!.Name!);
 
         var teamList = _pkmTeamService.GetAll(trainerID);
@@ -89,14 +89,20 @@ public class PKMTeamController : ControllerBase{
         return Ok(newTeam);        
     }
 
-    [HttpPut("/Team/{pkmTeam}")]
+    [Authorize]
+    [HttpPut("/Team")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<IEnumerable<PokemonTeam>> UpdateTeam(PokemonTeam pkmTeam){
-        try{
-            return Ok(_pkmTeamService.UpdateTeam(pkmTeam));
-        }catch(NullReferenceException e){
-            return Conflict(e.Message);
+    public IActionResult UpdateTeam([FromBody] PokemonTeamDTO pkmTeam)
+    {
+        int trainerID = _trainerService.GetTrainerIdByUsername(User!.Identity!.Name!);
+        var updatedTeam = _pkmTeamService.UpdateTeam(pkmTeam, trainerID);
+
+        if(updatedTeam is null)
+        {
+            return BadRequest();
         }
+
+        return Ok(updatedTeam);
     }
 
     // Check for login user here!

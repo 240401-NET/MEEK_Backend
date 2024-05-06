@@ -17,10 +17,21 @@ public class PKMTeamRepository : IPKMTeamRepo
         .Include(team => team.PokemonTeamMembers)
         .ThenInclude(pkm => pkm.PokemonMoveSet)
         .Where(team => team.TrainerId == trainerID);
+    }
+
+    public List<int> GetAllTeamId(int trainerId)
+    {
+        return _context.PokemonTeams.Where(team => team.TrainerId == trainerId).Select(team => team.Id).ToList();
     } 
 
     public async Task<PokemonTeam> GetTeam(int id) {
-        return await _context.PokemonTeams.Where(p => p.Id == id).SingleAsync();
+        return await _context.PokemonTeams
+            .Include(team => team.PokemonTeamMembers)
+            .ThenInclude(pkm => pkm.PokemonStats)
+            .Include(team => team.PokemonTeamMembers)
+            .ThenInclude(pkm => pkm.PokemonMoveSet)
+            .Where(p => p.Id == id)
+            .SingleAsync();
     }
     public async Task<PokemonTeam> GetTeam(string name){
         return await _context.PokemonTeams.Where(p => p.Name == name).SingleAsync();
@@ -31,11 +42,12 @@ public class PKMTeamRepository : IPKMTeamRepo
         _context.SaveChanges();
         return team;
     }
-    public async Task<PokemonTeam> UpdateTeam(PokemonTeam pkmTeam){
+    public PokemonTeam UpdateTeam(PokemonTeam pkmTeam){
         PokemonTeam oldTeam = GetTeam(pkmTeam.Id).Result;
-        _context.PokemonTeams.Entry(oldTeam).CurrentValues.SetValues(pkmTeam);
-        await _context.SaveChangesAsync();
-        return pkmTeam;
+        oldTeam.Name = pkmTeam.Name;
+        oldTeam.PokemonTeamMembers = pkmTeam.PokemonTeamMembers;
+        _context.SaveChanges();
+        return oldTeam;
     }
     public async Task<PokemonTeam> DeleteTeam(int id){
         PokemonTeam? tempPKM = GetTeam(id).Result;
