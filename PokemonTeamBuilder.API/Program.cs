@@ -29,6 +29,7 @@ builder.Services.AddScoped<IPKMAPIRepository, PKMAPIRepository>();
 builder.Services.AddScoped<IPTMRepository, PTMRepository>();
 builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
 
+
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
