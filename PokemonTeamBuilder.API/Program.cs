@@ -8,6 +8,14 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(co => {
+    co.AddPolicy("name" , pb =>{
+        pb.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
@@ -63,6 +71,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.MapIdentityApi<IdentityUser>();
+app.UseCors("name");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
