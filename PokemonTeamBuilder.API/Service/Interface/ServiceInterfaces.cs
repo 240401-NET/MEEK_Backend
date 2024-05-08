@@ -23,7 +23,7 @@ public interface IUserService
     ApplicationUser? GetUserByName(string username);
 }
 
-public interface IPKMAPISevice
+public interface IPKMAPIService
 {   
     Task<IEnumerable<PokemonNameandURL>> GetAllPokemon();
     Task<PokemonPokeApi> GetPokemonById(int pokemonId);

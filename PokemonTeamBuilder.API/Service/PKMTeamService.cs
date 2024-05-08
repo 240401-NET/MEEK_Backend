@@ -11,10 +11,10 @@ namespace PokemonTeamBuilder.API.Service;
 public class PKMTeamServices : IPKMTeamService
 {
     private readonly IPKMTeamRepo _pkmTeamRepo;
-    private readonly IPKMAPISevice _pkmAPIService;
+    private readonly IPKMAPIService _pkmAPIService;
     private readonly IPTMService _ptmService;
     private readonly string _pkmAPIBaseUrl = "https://pokeapi.co/api/v2/pokemon/";
-    public PKMTeamServices(IPKMTeamRepo pkmTeamRepo, IPKMAPISevice pkmAPIService, IPTMService pkmTMService){
+    public PKMTeamServices(IPKMTeamRepo pkmTeamRepo, IPKMAPIService pkmAPIService, IPTMService pkmTMService){
         _pkmTeamRepo = pkmTeamRepo; 
         _pkmAPIService = pkmAPIService;
         _ptmService = pkmTMService;
