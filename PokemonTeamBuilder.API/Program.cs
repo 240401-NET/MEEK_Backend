@@ -8,18 +8,32 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(co => {
+    co.AddPolicy("name" , pb =>{
+        pb.WithOrigins("http://localhost:5137")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// builder.Services.AddDbContext<UserDBContext>(options =>
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("UserID_Local")));
+
+// builder.Services.AddDbContext<PokemonTrainerDbContext>(options =>
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("PSTBAPI_Local")));
 
 builder.Services.AddDbContext<UserDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("UserID_Local")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MEEKDB")));
 
 builder.Services.AddDbContext<PokemonTrainerDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PSTBAPI_Local")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MEEKDB")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPKMTeamService, PKMTeamServices>();
-builder.Services.AddScoped<IPKMAPISevice, PKMAPISevice>();
+builder.Services.AddScoped<IPKMAPIService, PKMAPIService>();
 builder.Services.AddScoped<IPTMService, PTMService>();
 builder.Services.AddScoped<ITrainerService, TrainerService>();
 
@@ -63,6 +77,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.MapIdentityApi<IdentityUser>();
+app.UseCors("name");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
