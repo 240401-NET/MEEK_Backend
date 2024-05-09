@@ -15,8 +15,7 @@ public class PKMTeamServiceTest
     Mock<IPTMService> ptmServiceMock;
     Mock<IPKMTeamRepo> teamRepoMock;
     Mock<IPKMAPISevice> pkmAPIServiceMock;
-    PokemonTeamMember postMockTM;
-    PokemonTeamMember preMockTM;
+    PokemonTeamMember ptmMock;
     TeamMemberDTO ptmDTO;
     PokemonTeam mockTeam;
     PokemonTeam mockTeamNoMembers;
@@ -30,7 +29,7 @@ public class PKMTeamServiceTest
         ptmServiceMock = new();
         teamRepoMock = new();
         pkmAPIServiceMock = new();
-        postMockTM = new PokemonTeamMember{
+        ptmMock = new PokemonTeamMember{
                 Id = 1,
                 PkmApiId = 1,
                 Name = "bulbasaur",
@@ -107,76 +106,6 @@ public class PKMTeamServiceTest
                     }
                 }
             };
-        preMockTM = new PokemonTeamMember{
-            PkmApiId = 1,
-            Name = "bulbasaur",
-            NickName = "Bulba",
-            Level = 1,
-            ChosenAbility = "Overgrow",
-            Gender = true,
-            IsShiny = false,
-            TeraType = "Normal",
-            HeldItem = "Leftovers",
-            RosterOrder = 1,
-            Nature = "Sassy",
-            PokemonMoveSet = new PokemonMoveSet{
-                Move1 = "none",
-                Move2 = "none",
-                Move3 = "none",
-                Move4 = "none",
-                PkmTmId = 1
-            },
-            PokemonStats = new List<PokemonStat>{
-                new PokemonStat{
-                    Effort = 0,
-                    Individual = 31,
-                    Name = "hp",
-                    Url = "url",
-                    Total = 50,
-                    PkmTmId = 1 
-                },
-                new PokemonStat{
-                    Effort = 0,
-                    Individual = 31,
-                    Name = "attack",
-                    Url = "url",
-                    Total = 50,
-                    PkmTmId = 1
-                },
-                new PokemonStat{
-                    Effort = 0,
-                    Individual = 31,
-                    Name = "defense",
-                    Url = "url",
-                    Total = 50,
-                    PkmTmId = 1
-                },
-                new PokemonStat{
-                    Effort = 0,
-                    Individual = 31,
-                    Name = "special-attack",
-                    Url = "url",
-                    Total = 50,
-                    PkmTmId = 1
-                },
-                new PokemonStat{
-                    Effort = 0,
-                    Individual = 31,
-                    Name = "special-defense",
-                    Url = "url",
-                    Total = 50,
-                    PkmTmId = 1
-                },
-                new PokemonStat{
-                    Effort = 0,
-                    Individual = 31,
-                    Name = "speed",
-                    Url = "url",
-                    Total = 50,
-                    PkmTmId = 1
-                }
-            }
-        };
         ptmDTO = new TeamMemberDTO{
             PkmApiId = 1,
             Name = "bulbasaur",
@@ -237,7 +166,7 @@ public class PKMTeamServiceTest
                 Name = "mockTrainer",
                 PokemonTeams = new List<PokemonTeam>()
             },
-            PokemonTeamMembers = new List<PokemonTeamMember>{postMockTM}
+            PokemonTeamMembers = new List<PokemonTeamMember>{ptmMock}
         };
         mockTeamNoMembers = new PokemonTeam{
             Id = 1,
@@ -317,14 +246,14 @@ public class PKMTeamServiceTest
     [Fact]
     public void CreateNewTeamTest(){
         
-        ptmServiceMock.Setup(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == preMockTM.Name), 1)).Returns(mockTeam);
+        ptmServiceMock.Setup(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == ptmMock.Name), 1)).Returns(mockTeam);
         teamRepoMock.Setup(repository => repository.CreateNewTeam(It.Is<PokemonTeam>(data => data.Name == mockTeam.Name && data.TrainerId == trainerId))).Returns(mockTeamNoMembers);
-        pkmAPIServiceMock.Setup(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + preMockTM.PkmApiId)).Returns(Task.FromResult(mockPokemonPokeAPI));
+        pkmAPIServiceMock.Setup(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + ptmMock.PkmApiId)).Returns(Task.FromResult(mockPokemonPokeAPI));
         
         Assert.NotNull(service.CreateNewTeam(pkmTeamDTO, 1));
-        ptmServiceMock.Verify(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == preMockTM.Name), 1), Times.Exactly(pkmTeamDTO.PokemonTeamMembers.Count));
+        ptmServiceMock.Verify(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == ptmMock.Name), 1), Times.Exactly(pkmTeamDTO.PokemonTeamMembers.Count));
         teamRepoMock.Verify(repository => repository.CreateNewTeam(It.Is<PokemonTeam>(data => data.Name == mockTeam.Name && data.TrainerId == trainerId)), Times.Exactly(1));
-        pkmAPIServiceMock.Verify(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + preMockTM.PkmApiId),Times.Exactly(pkmTeamDTO.PokemonTeamMembers.Count));
+        pkmAPIServiceMock.Verify(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + ptmMock.PkmApiId),Times.Exactly(pkmTeamDTO.PokemonTeamMembers.Count));
     }
 
     [Fact]
