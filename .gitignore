@@ -2,5 +2,5 @@ PokemonTeamBuilder.API/obj/*
 PokemonTeamBuilder.API/bin/*
 PokemonTeamBuilder.Tests/obj/*
 PokemonTeamBuilder.Tests/bin/*
-PokemonTeamBuilder.Tests/coveragereport/*
-PokemonTeamBuilder.Tests/TestResults/*
+# PokemonTeamBuilder.Tests/coveragereport/*
+# PokemonTeamBuilder.Tests/TestResults/*
