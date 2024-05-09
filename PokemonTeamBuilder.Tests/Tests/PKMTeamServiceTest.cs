@@ -10,7 +10,7 @@ public class PKMTeamServiceTest
 {
     Mock<IPTMService> _ptmServiceMock;
     Mock<IPKMTeamRepo> _teamRepoMock;
-    Mock<IPKMAPISevice> _pkmAPIServiceMock;
+    Mock<IPKMAPIService> _pkmAPIServiceMock;
     PokemonTeamMember _mockPTM;
     TeamMemberDTO _mockPtmDTO;
     PokemonTeam _mockTeam;
