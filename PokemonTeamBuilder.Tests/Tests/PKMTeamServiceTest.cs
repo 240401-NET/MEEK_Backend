@@ -11,13 +11,13 @@ public class PKMTeamServiceTest
     Mock<IPTMService> _ptmServiceMock;
     Mock<IPKMTeamRepo> _teamRepoMock;
     Mock<IPKMAPISevice> _pkmAPIServiceMock;
-    PokemonTeamMember _ptmMock;
-    TeamMemberDTO _ptmDTO;
+    PokemonTeamMember _mockPTM;
+    TeamMemberDTO _mockPtmDTO;
     PokemonTeam _mockTeam;
     PokemonTeam _mockTeamNoMembers;
     PokemonPokeApi _mockPokemonPokeAPI;
     string _pkmAPIBaseUrl = "https://pokeapi.co/api/v2/pokemon/";
-    PokemonTeamDTO _pkmTeamDTO;
+    PokemonTeamDTO _mockPkmTeamDTO;
     int _trainerId = 1;
     PKMTeamServices _service;
 
@@ -25,7 +25,7 @@ public class PKMTeamServiceTest
         _ptmServiceMock = new();
         _teamRepoMock = new();
         _pkmAPIServiceMock = new();
-        _ptmMock = new PokemonTeamMember{
+        _mockPTM = new PokemonTeamMember{
                 Id = 1,
                 PkmApiId = 1,
                 Name = "bulbasaur",
@@ -102,7 +102,7 @@ public class PKMTeamServiceTest
                     }
                 }
             };
-        _ptmDTO = new TeamMemberDTO{
+        _mockPtmDTO = new TeamMemberDTO{
             PkmApiId = 1,
             Name = "bulbasaur",
             NickName = "Bulba",
@@ -162,7 +162,7 @@ public class PKMTeamServiceTest
                 Name = "mockTrainer",
                 PokemonTeams = new List<PokemonTeam>()
             },
-            PokemonTeamMembers = new List<PokemonTeamMember>{_ptmMock}
+            PokemonTeamMembers = new List<PokemonTeamMember>{_mockPTM}
         };
         _mockTeamNoMembers = new PokemonTeam{
             Id = 1,
@@ -222,9 +222,9 @@ public class PKMTeamServiceTest
                 }
             }
         };
-        _pkmTeamDTO = new PokemonTeamDTO{
+        _mockPkmTeamDTO = new PokemonTeamDTO{
             Name = "mockTeam",
-            PokemonTeamMembers = new List<TeamMemberDTO>(){_ptmDTO}
+            PokemonTeamMembers = new List<TeamMemberDTO>(){_mockPtmDTO}
         };
         _service = new PKMTeamServices(_teamRepoMock.Object, _pkmAPIServiceMock.Object, _ptmServiceMock.Object);
     }
@@ -232,14 +232,14 @@ public class PKMTeamServiceTest
     [Fact]
     public void CreateNewTeamTest(){
         
-        _ptmServiceMock.Setup(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == _ptmMock.Name), 1)).Returns(_mockTeam);
+        _ptmServiceMock.Setup(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == _mockPTM.Name), 1)).Returns(_mockTeam);
         _teamRepoMock.Setup(repository => repository.CreateNewTeam(It.Is<PokemonTeam>(data => data.Name == _mockTeam.Name && data.TrainerId == _trainerId))).Returns(_mockTeamNoMembers);
-        _pkmAPIServiceMock.Setup(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + _ptmMock.PkmApiId)).Returns(Task.FromResult(_mockPokemonPokeAPI));
+        _pkmAPIServiceMock.Setup(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + _mockPTM.PkmApiId)).Returns(Task.FromResult(_mockPokemonPokeAPI));
         
-        Assert.NotNull(_service.CreateNewTeam(_pkmTeamDTO, 1));
-        _ptmServiceMock.Verify(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == _ptmMock.Name), 1), Times.Exactly(_pkmTeamDTO.PokemonTeamMembers.Count));
+        Assert.NotNull(_service.CreateNewTeam(_mockPkmTeamDTO, 1));
+        _ptmServiceMock.Verify(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == _mockPTM.Name), 1), Times.Exactly(_mockPkmTeamDTO.PokemonTeamMembers.Count));
         _teamRepoMock.Verify(repository => repository.CreateNewTeam(It.Is<PokemonTeam>(data => data.Name == _mockTeam.Name && data.TrainerId == _trainerId)), Times.Exactly(1));
-        _pkmAPIServiceMock.Verify(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + _ptmMock.PkmApiId),Times.Exactly(_pkmTeamDTO.PokemonTeamMembers.Count));
+        _pkmAPIServiceMock.Verify(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + _mockPTM.PkmApiId),Times.Exactly(_mockPkmTeamDTO.PokemonTeamMembers.Count));
     }
 
     [Fact]
@@ -272,16 +272,16 @@ public class PKMTeamServiceTest
 
     [Fact]
     public void UpdateTeamTest(){
-        _pkmTeamDTO.Id = _mockTeam.Id;
-        _teamRepoMock.Setup(repository => repository.UpdateTeam(It.Is<PokemonTeam>(data => data.Name == _pkmTeamDTO.Name))).Returns(_mockTeam);
+        _mockPkmTeamDTO.Id = _mockTeam.Id;
+        _teamRepoMock.Setup(repository => repository.UpdateTeam(It.Is<PokemonTeam>(data => data.Name == _mockPkmTeamDTO.Name))).Returns(_mockTeam);
         _teamRepoMock.Setup(repository => repository.GetAllTeamId(_mockTeam.TrainerId)).Returns(new List<int>(){_mockTeam.Id});
         _teamRepoMock.Setup(repository => repository.GetTeam(_mockTeam.Id)).Returns(Task.FromResult(_mockTeam));
         
-        Assert.Equal(_mockTeam, _service.UpdateTeam(_pkmTeamDTO, _mockTeam.TrainerId));
+        Assert.Equal(_mockTeam, _service.UpdateTeam(_mockPkmTeamDTO, _mockTeam.TrainerId));
         _teamRepoMock.Verify(repository => repository.GetTeam(_mockTeam.Id), Times.Exactly(1));
         _teamRepoMock.Verify(repository => repository.GetAllTeamId(_mockTeam.TrainerId), Times.Exactly(1));
-        _teamRepoMock.Verify(repository => repository.UpdateTeam(It.Is<PokemonTeam>(data => data.Name == _pkmTeamDTO.Name)), Times.Exactly(1));
-        _pkmTeamDTO.Id = null;
+        _teamRepoMock.Verify(repository => repository.UpdateTeam(It.Is<PokemonTeam>(data => data.Name == _mockPkmTeamDTO.Name)), Times.Exactly(1));
+        _mockPkmTeamDTO.Id = null;
     }
 
     [Fact]

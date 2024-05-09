@@ -1,8 +1,8 @@
 using PokemonTeamBuilder.API.Model;
 using PokemonTeamBuilder.API.Service;
 using PokemonTeamBuilder.API.Repository;
-using PokemonTeamBuilder.API.DTO;
 using Moq;
+
 namespace PokemonTeamBuilder.Tests;
 
 public class PTMServiceTest
