@@ -1,14 +1,18 @@
+using PokemonTeamBuilder.API.Model;
+
 namespace PokemonTeamBuilder.Tests;
 
 public class PokemonResponseTest
 {
     [Fact]
-    public void Test()
+    public void ToStringTest()
     {
-        //Arrange
-
-        //Act
-
-        //Assert
+        string name = "bulbasaur";
+        string URL = "url";
+        PokemonNameandURL testResponse = new PokemonNameandURL(){
+            Name = name,
+            URL = URL
+       };
+        Assert.Equal($"Name: {name}\n\tURL: {URL}", testResponse.ToString());
     }
 }
