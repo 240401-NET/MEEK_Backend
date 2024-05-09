@@ -8,7 +8,6 @@ namespace PokemonTeamBuilder.Tests;
 
 public class PKMAPIUtilitiesTest
 {
-    
     [Fact]
     public void PokemonFromJsonThrowExceptionWhenJsonIsNull()
     {

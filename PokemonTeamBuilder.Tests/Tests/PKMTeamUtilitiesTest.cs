@@ -8,7 +8,6 @@ namespace PokemonTeamBuilder.Tests;
 
 public class PKMTeamUtilitiesTest
 {
-
     [Fact]
     public void PkmTMFromDTOReturnsCorrectTeamMember()
     {
@@ -135,6 +134,4 @@ public class PKMTeamUtilitiesTest
         Assert.Equal(name, pkmAbility.Name);  
         Assert.Equal(url, pkmAbility.Url);  
     }
-    
-    
 }
