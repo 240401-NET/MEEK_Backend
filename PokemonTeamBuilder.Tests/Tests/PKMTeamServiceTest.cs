@@ -22,8 +22,10 @@ public class PKMTeamServiceTest
     PokemonTeam mockTeamNoMembers;
     PokemonPokeApi mockPokemonPokeAPI;
     string _pkmAPIBaseUrl = "https://pokeapi.co/api/v2/pokemon/";
-    PokemonTeamDTO pkmTeam;
+    PokemonTeamDTO pkmTeamDTO;
     int trainerId = 1;
+    PKMTeamServices service;
+
     public PKMTeamServiceTest(){
         ptmServiceMock = new();
         teamRepoMock = new();
@@ -295,10 +297,11 @@ public class PKMTeamServiceTest
                 }
             }
         };
-        pkmTeam = new PokemonTeamDTO{
+        pkmTeamDTO = new PokemonTeamDTO{
             Name = "mockTeam",
             PokemonTeamMembers = new List<TeamMemberDTO>(){ptmDTO}
         };
+        service = new PKMTeamServices(teamRepoMock.Object, pkmAPIServiceMock.Object, ptmServiceMock.Object);
     }
 
     [Fact]
@@ -315,14 +318,64 @@ public class PKMTeamServiceTest
     public void CreateNewTeamTest(){
         
         ptmServiceMock.Setup(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == preMockTM.Name), 1)).Returns(mockTeam);
-        teamRepoMock.Setup(repo => repo.CreateNewTeam(It.Is<PokemonTeam>(data => data.Name == mockTeam.Name && data.TrainerId == trainerId))).Returns(mockTeamNoMembers);
+        teamRepoMock.Setup(repository => repository.CreateNewTeam(It.Is<PokemonTeam>(data => data.Name == mockTeam.Name && data.TrainerId == trainerId))).Returns(mockTeamNoMembers);
         pkmAPIServiceMock.Setup(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + preMockTM.PkmApiId)).Returns(Task.FromResult(mockPokemonPokeAPI));
-        PKMTeamServices service = new PKMTeamServices(teamRepoMock.Object, pkmAPIServiceMock.Object, ptmServiceMock.Object);
         
-        Assert.NotNull(service.CreateNewTeam(pkmTeam, 1));
-        ptmServiceMock.Verify(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == preMockTM.Name), 1), Times.Exactly(pkmTeam.PokemonTeamMembers.Count));
+        Assert.NotNull(service.CreateNewTeam(pkmTeamDTO, 1));
+        ptmServiceMock.Verify(service => service.AddPkmToTeam(It.Is<PokemonTeamMember>(data => data.Name == preMockTM.Name), 1), Times.Exactly(pkmTeamDTO.PokemonTeamMembers.Count));
         teamRepoMock.Verify(repository => repository.CreateNewTeam(It.Is<PokemonTeam>(data => data.Name == mockTeam.Name && data.TrainerId == trainerId)), Times.Exactly(1));
-        pkmAPIServiceMock.Verify(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + preMockTM.PkmApiId),Times.Exactly(pkmTeam.PokemonTeamMembers.Count));
+        pkmAPIServiceMock.Verify(service => service.GetPokemonFromAPI(_pkmAPIBaseUrl + preMockTM.PkmApiId),Times.Exactly(pkmTeamDTO.PokemonTeamMembers.Count));
     }
-    
+
+    [Fact]
+    public async void GetTeamByIdTest(){
+        teamRepoMock.Setup(repository => repository.GetTeam(mockTeam.Id)).Returns(Task.FromResult(mockTeam));
+        teamRepoMock.Setup(repository => repository.DoesTeamExist(mockTeam.Id)).Returns(Task.FromResult(true));
+        
+        Assert.NotNull(await service.GetTeam(mockTeam.Id));
+        teamRepoMock.Verify(repository => repository.GetTeam(mockTeam.Id), Times.Exactly(1));
+        teamRepoMock.Verify(repository => repository.DoesTeamExist(mockTeam.Id), Times.Exactly(1));
+    }
+
+    [Fact]
+    public async void GetTeamByNameTest(){
+        teamRepoMock.Setup(repository => repository.GetTeam(mockTeam.Name)).Returns(Task.FromResult(mockTeam));
+        teamRepoMock.Setup(repository => repository.DoesTeamExist(mockTeam.Name)).Returns(Task.FromResult(true));
+        
+        Assert.NotNull(await service.GetTeam(mockTeam.Name));
+        teamRepoMock.Verify(repository => repository.GetTeam(mockTeam.Name), Times.Exactly(1));
+        teamRepoMock.Verify(repository => repository.DoesTeamExist(mockTeam.Name), Times.Exactly(1));
+    }
+
+    [Fact]
+    public void GetAllTest(){
+        teamRepoMock.Setup(repository => repository.GetAll(mockTeam.TrainerId)).Returns(new List<PokemonTeam>(){mockTeam});
+        
+        Assert.Contains(mockTeam, service.GetAll(mockTeam.TrainerId));
+        teamRepoMock.Verify(repository => repository.GetAll(mockTeam.TrainerId), Times.Exactly(1));
+    }
+
+    [Fact]
+    public void UpdateTeamTest(){
+        pkmTeamDTO.Id = mockTeam.Id;
+        teamRepoMock.Setup(repository => repository.UpdateTeam(It.Is<PokemonTeam>(data => data.Name == pkmTeamDTO.Name))).Returns(mockTeam);
+        teamRepoMock.Setup(repository => repository.GetAllTeamId(mockTeam.TrainerId)).Returns(new List<int>(){mockTeam.Id});
+        teamRepoMock.Setup(repository => repository.GetTeam(mockTeam.Id)).Returns(Task.FromResult(mockTeam));
+        
+        Assert.Equal(mockTeam, service.UpdateTeam(pkmTeamDTO, mockTeam.TrainerId));
+        teamRepoMock.Verify(repository => repository.GetTeam(mockTeam.Id), Times.Exactly(1));
+        teamRepoMock.Verify(repository => repository.GetAllTeamId(mockTeam.TrainerId), Times.Exactly(1));
+        teamRepoMock.Verify(repository => repository.UpdateTeam(It.Is<PokemonTeam>(data => data.Name == pkmTeamDTO.Name)), Times.Exactly(1));
+        pkmTeamDTO.Id = null;
+    }
+
+    [Fact]
+    public void DeleteTeamTest(){
+        teamRepoMock.Setup(repository => repository.DeleteTeam(mockTeam.Id)).Returns(mockTeam);
+        teamRepoMock.Setup(repository => repository.GetAllTeamId(mockTeam.TrainerId)).Returns(new List<int>(){mockTeam.Id});
+        
+        Assert.Equal(mockTeam, service.DeleteTeam(mockTeam.TrainerId, mockTeam.Id));
+        teamRepoMock.Verify(repository => repository.DeleteTeam(mockTeam.Id), Times.Exactly(1));
+        teamRepoMock.Verify(repository => repository.GetAllTeamId(mockTeam.TrainerId), Times.Exactly(1));
+    }
 }
