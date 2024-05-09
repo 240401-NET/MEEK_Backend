@@ -11,9 +11,9 @@ namespace PokemonTeamBuilder.API.Controller;
 [Route("api/[controller]")]
 [ApiController]
 public class PKMAPIController : ControllerBase{
-    private readonly IPKMAPISevice _pkmAPISevice;
+    private readonly IPKMAPIService _pkmAPISevice;
 
-    public PKMAPIController(IPKMAPISevice pkmAPISevice) => _pkmAPISevice = pkmAPISevice;
+    public PKMAPIController(IPKMAPIService pkmAPISevice) => _pkmAPISevice = pkmAPISevice;
     
     [HttpGet("/pokemon")]
     public IActionResult GetAllPokemon()
