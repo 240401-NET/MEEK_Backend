@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(co => {
     co.AddPolicy("name" , pb =>{
-        pb.WithOrigins("http://localhost:5137")
+        pb.WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -43,6 +43,8 @@ builder.Services.AddScoped<IPKMAPIRepository, PKMAPIRepository>();
 builder.Services.AddScoped<IPTMRepository, PTMRepository>();
 builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -52,8 +54,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<UserDBContext>()
 .AddSignInManager<SignInManager<ApplicationUser>>();
 
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
+builder.Services.Configure<CookieAuthenticationOptions>(
+  IdentityConstants.ApplicationScheme,
+    x => x.Cookie.SameSite = SameSiteMode.None);
+
 
 builder.Services.AddHttpClient();
 
