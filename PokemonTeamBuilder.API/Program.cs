@@ -43,6 +43,8 @@ builder.Services.AddScoped<IPKMAPIRepository, PKMAPIRepository>();
 builder.Services.AddScoped<IPTMRepository, PTMRepository>();
 builder.Services.AddScoped<ITrainerRepository, TrainerRepository>();
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -52,8 +54,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<UserDBContext>()
 .AddSignInManager<SignInManager<ApplicationUser>>();
 
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
 
 builder.Services.AddHttpClient();
 

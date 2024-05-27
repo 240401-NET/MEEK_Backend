@@ -53,3 +53,5 @@ Make sure the connection string {Initial Catalog} field is different for {UserDB
 
 #### Remove last migration made
 - dotnet ef migrations remove --context {DBContext}
+
+'Server=tcp:kungloprojects.database.windows.net,1433;Initial Catalog=PetsDB;Persist Security Info=False;User ID=project-admin;Password="MymeekDB@22";MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
