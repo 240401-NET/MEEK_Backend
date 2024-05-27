@@ -54,6 +54,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<UserDBContext>()
 .AddSignInManager<SignInManager<ApplicationUser>>();
 
+builder.Services.Configure<CookieAuthenticationOptions>(
+  IdentityConstants.ApplicationScheme,
+    x => x.Cookie.SameSite = SameSiteMode.None);
+
 
 builder.Services.AddHttpClient();
 
